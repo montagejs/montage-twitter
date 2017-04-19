@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+        "login": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": { "#": "login" },
+                "identifier": "login",
+                "label": "Login"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+            ]
+        }
+    }
+    </script>
+</head>
+<body>
+    <div data-montage-id="owner">
+        <img src="../../assets/icons/twitter.png" height="50">
+        <p>
+            Click bellow to authenticate.
+        </p>
+        <button data-montage-id="login"></button>
+    </div>
+</body>
+</html>

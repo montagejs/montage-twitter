@@ -1,0 +1,16 @@
+{
+  "name": "montage-twitter-public",
+  "version": "0.1.0",
+  "main": "",
+  "dependencies": {
+    "montage": "git://github.com/montagejs/montage.git#master",
+    "montage-data": "git://github.com/montagestudio/montage-data.git#master",
+    "digit": "~0.5.0"
+  },
+  "exclude": [
+    "test"
+  ],
+  "bundle": [
+    "ui/main.reel"
+  ]
+}

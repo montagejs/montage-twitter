@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/montage-serialization">
+        {
+            "owner": {
+                "properties": {
+                    "element": {"#": "main"},
+                    "auth": {"@": "auth"},
+                    "isConnected": false
+                }
+            },
+            "substitution": {
+                "prototype": "montage/ui/substitution.reel",
+                "properties": {
+                    "element": {"#": "substitution"},
+                    "shouldLoadComponentTree": true
+                },
+                "bindings": {
+                    "switchValue": {"<-": "@owner.isAuthenticated ? 'content' : 'login'"}
+                }
+            },
+            "auth": {
+                "prototype": "montage/ui/slot.reel",
+                "properties": {
+                    "element": {"#": "auth"}
+                }
+            },
+            "tweets": {
+                "prototype": "ui/tweets.reel",
+                "properties": {
+                    "element": { "#": "tweets" }
+                },
+                "bindings": {
+                    "content": { "<->": "@owner.tweets" }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div data-montage-id="main" data-montage-skin="light" class="Main">
+        <div data-montage-id="substitution">
+            <div data-arg="login" data-montage-id="auth"></div>
+            <div data-arg="content" data-montage-id="tweets"></div>
+        </div>
+    </div>
+</body>
+</html>
