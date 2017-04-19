@@ -18,3 +18,10 @@ npm start
 
 3. Test
 Then Open you browser to "https://localhost:3000".
+
+
+# TODO
+- Add authentication persistance
+- Add polling auto-updates
+- Add push auto-updates
+- Add param to swtich from push to poll updates

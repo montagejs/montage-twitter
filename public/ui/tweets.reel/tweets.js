@@ -35,9 +35,19 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
         },
     },
 
+    UPDATE_AUTO: {
+        value: true
+    },
+    UPDATE_METHOD: {
+        value: 'poll'
+    },
+    UPDATE_INTERVAL: {
+        value: 15000
+    },
+
     loadTweets: {
         value: function () {
-            var that = this;
+            var self = this;
 
             var dataExpression = "";
             var dataParameters = {
@@ -49,8 +59,11 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             var dataType = Tweet.TYPE;
             var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
             
-            that.mainService.fetchData(dataQuery).then(function (tweets) {
-                that.tweets = tweets;
+            self.mainService.fetchData(dataQuery).then(function (tweets) {
+                self.tweets = tweets;
+                if (self.UPDATE_AUTO && self.UPDATE_METHOD === 'poll') {
+                    setTimeout(self.loadTweets.bind(self), self.UPDATE_INTERVAL);
+                }
             });
         }
     },
