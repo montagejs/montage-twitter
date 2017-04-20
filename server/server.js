@@ -1,4 +1,5 @@
 
+var http = require("http");             
 var spdy = require('spdy');
 var express = require('express');
 var session = require('express-session');
@@ -11,7 +12,7 @@ var passport = require('passport');
 // Path
 
 var ROOT_PATH = __dirname + '/..';
-var PUBLIC_PATH = ROOT_PATH + '/public';
+var PUBLIC_PATH = ROOT_PATH + '/public/';
 
 function readFile(path) {
 	return new Promise(function (resolve, reject) {
@@ -30,7 +31,8 @@ process.env.TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8
 process.env.TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi";
 
 process.env.APP_PORT = process.env.APP_PORT || 3000;
-process.env.APP_URL = process.env.APP_URL || 'https://localhost:' + process.env.APP_PORT;
+process.env.APP_HOST = process.env.APP_HOST || 'localhost';
+process.env.APP_URL = process.env.APP_URL || 'https://' + process.env.APP_HOST + ':' + process.env.APP_PORT;
 
 
 //
@@ -40,18 +42,20 @@ process.env.APP_URL = process.env.APP_URL || 'https://localhost:' + process.env.
 var app = express();
 
 // Expose statics
-app.use(express.static(PUBLIC_PATH));
+app.use(express.static(PUBLIC_PATH, {
+  index: false
+}));
 
 // Trust first proxy
 app.set('trust proxy', 1);
 
 // Configure passport
 passport.serializeUser(function(user, next) {
-    next(null, user);
+  next(null, user);
 });
 
 passport.deserializeUser(function(id, next) {
-    next(null, id);
+  next(null, id);
 });
 
 app.use(passport.initialize());
@@ -88,10 +92,11 @@ app.get('/', function(req, res) {
     Promise.all([
       readFile(PUBLIC_PATH + '/index.html'),
       readFile(PUBLIC_PATH + '/node_modules/montage/montage.js'),
+      readFile(PUBLIC_PATH + '/package.json'),
     ]).then(function (files) {
 
       // Does the browser support push?
-      if (res.push){
+      if (res.push) {
 
           // The JS file
           var montagePush = res.push('/node_modules/montage/montage.js', {
@@ -104,6 +109,18 @@ app.get('/', function(req, res) {
           });
 
           montagePush.end(files[1]);
+
+          // The Package file
+          var pkgPush = res.push('/package.json', {
+              req: {'accept': '**/*'},
+              res: {'content-type': 'application/json'}
+          });
+
+          pkgPush.on('error', function (err) {
+              console.error(err);
+          });
+
+          pkgPush.end(files[2]);
       }
 
       res.writeHead(200);
@@ -142,11 +159,11 @@ app.get('/auth/twitter/callback', function (req, res, next) {
   };
 
   return passport.authenticate('twitter', options)(req, res, function (err) {
-        if (err) {
-          res.redirect('/auth/twitter/result#error=' + JSON.stringify(err.message || err));
-        } else {
-          res.redirect('/auth/twitter/result#result=' + JSON.stringify(req.user));
-        }
+    if (err) {
+      res.redirect('/auth/twitter/result#error=' + JSON.stringify(err.message || err));
+    } else {
+      res.redirect('/auth/twitter/result#result=' + JSON.stringify(req.user));
+    }
   });
 });
 
@@ -158,32 +175,66 @@ app.get('/auth/twitter/result', function (req, res, next) {
 
 // Twitter api proxy
 app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next) {
- 
-  var accesToken = {
-      token: req.query.token || req.headers['authorization-token'],
-      secret: req.query.secret || req.headers['authorization-secret']
-  };
+  
+  var twitterObject = req.params.twitter_object,
+      twitterAction = req.params.twitter_action,
+      twitterParams = req.query;
 
-  var client = new Twitter({
-      consumer_key: process.env.TWITTER_CONSUMER_KEY,
-      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-      access_token_key: accesToken.token,
-      access_token_secret: accesToken.secret
-  });
-   
-  var params = {};
-  client.get(req.params.twitter_object + '/' + req.params.twitter_action, params, function(error, tweets, response) {
-    if (error) {
-        next(error);
-    } else {
-        res.json(tweets);
-    }
-  });
+  if (0) {
+      readFile(PUBLIC_PATH + '/logic/service/twitter-' + twitterObject + '-' + twitterAction + '.json').then(function (file) {
+          res.writeHead(200);
+          res.end(file);
+      }, function (err) {
+        next(err);
+      })
+
+  } else {
+
+    var accesToken = {
+        token: req.query.token || req.headers['authorization-token'],
+        secret: req.query.secret || req.headers['authorization-secret']
+    };
+
+    var client = new Twitter({
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: accesToken.token,
+        access_token_secret: accesToken.secret
+    });
+     
+    // TODO implement http2 push
+    // - https://blog.twitter.com/2008/what-does-rate-limit-exceeded-mean-updated
+    console.log('Twitter API call', twitterObject, twitterAction, twitterParams);
+    client.get(twitterObject + '/' + twitterAction, twitterParams, function(errors, tweets, response) {
+      if (errors) {
+          next(errors[0]);
+      } else {
+          res.json(tweets);
+      }
+    });
+  }
 });
+
+
+app.use(function (err, req, res, next) {
+  console.error(err);
+  res.status(500);
+  res.end(err.message);  
+})
 
 //
 // Start http server
 //
+
+if (process.env.APP_PORT === 443) {
+  var forwardingServer = express();
+
+  forwardingServer.all('*', function(req, res) {
+      return res.redirect("https://" + process.env.APP_URL + req.url);
+  });
+
+  forwardingServer.listen(80); 
+}
 
 var options = {
     key: fs.readFileSync(ROOT_PATH + '/certs/server.key'),
