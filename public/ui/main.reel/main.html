@@ -20,13 +20,16 @@
                     "shouldLoadComponentTree": true
                 },
                 "bindings": {
-                    "switchValue": {"<-": "@owner.isAuthenticated ? 'content' : 'login'"}
+                    "switchValue": {"<-": "@owner._authorizationManager.hasPendingServices ? 'login' : 'content'"}
                 }
             },
             "auth": {
                 "prototype": "montage/ui/slot.reel",
                 "properties": {
                     "element": {"#": "auth"}
+                },
+                "bindings": {
+                    "content": { "<-": "@owner._authorizationManager.authorizationManagerPanel" }
                 }
             },
             "tweets": {
