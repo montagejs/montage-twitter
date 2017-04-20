@@ -21,7 +21,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
         value: 'poll' // poll|longpoll|server-push|http2-push
     },
     UPDATE_INTERVAL: {
-        value: 3600000
+        value: 3600 // default one hour. Twitter limit to 100 call per hours
     },
 
     isLoading: {
@@ -62,6 +62,12 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             });
         }
     },
+
+    //
+    // Initialyze mainService
+    //
+
+    // TODO use future montage-data/service/loader.reel
     
     initServices: {
         value: function () {
@@ -71,6 +77,11 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             return Promise.resolve();
         },
     },
+
+
+    //
+    // Business layer using Service 
+    //
 
     loadTweets: {
         value: function () {
@@ -162,12 +173,15 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
         }
     },
 
+    //
+    // Handle events
+    //
+
     handleRefreshAction: {
         value: function(event) {
             this.loadTweets();
         }
     },
-
     handleTimelineAction: {
         value: function(event) {
             this.selectedTab = 'timeline';
@@ -188,9 +202,5 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             this.selectedUser = 'montagejs';
             this.loadUserTweets();
         }
-    },
-
-    tweets: {
-        value: null
     }
 });
