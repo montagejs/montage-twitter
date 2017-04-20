@@ -11,7 +11,7 @@
                     "element": {"#": "owner"}
                 },
                 "bindings": {
-                    "classList.has('Tweets-loading')": { "<-": "!@owner.tweets" } 
+                    "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" } 
                 }
             },
             "tweets": {
@@ -47,20 +47,69 @@
                         "listener": {"@": "owner"}
                     }
                 ]
+            },
+            "profile": {
+                "prototype": "digit/ui/button.reel",
+                "properties": {
+                    "element": { "#": "profile" },
+                    "identifier": "profile",
+                    "label": "Profile"
+                },
+                "listeners": [
+                    {
+                        "type": "action",
+                        "listener": {"@": "owner"}
+                    }
+                ]
+            },
+            "timeline": {
+                "prototype": "digit/ui/button.reel",
+                "properties": {
+                    "element": { "#": "timeline" },
+                    "identifier": "timeline",
+                    "label": "Timeline"
+                },
+                "listeners": [
+                    {
+                        "type": "action",
+                        "listener": {"@": "owner"}
+                    }
+                ]
+            },
+            "user": {
+                "prototype": "digit/ui/button.reel",
+                "properties": {
+                    "element": { "#": "user" },
+                    "identifier": "user",
+                    "label": "@montagejs"
+                },
+                "listeners": [
+                    {
+                        "type": "action",
+                        "listener": {"@": "owner"}
+                    }
+                ]
             }
         }
     </script>
 </head>
 <body>
     <div data-montage-id="owner" class="Tweets">
-        <img src="../../assets/icons/twitter.png" height="50">
-        <div class="Tweets-loader">
+        <p>
+            <img src="../../assets/icons/twitter.png" height="50">
+        </p>
+        <p class="Tweets-loader">
             Loading...
+        </p>
+        <div class="Tweets-content">
+            <button data-montage-id="refresh">Refresh</button>
+            <button data-montage-id="timeline">Timeline</button>
+            <button data-montage-id="profile">Profile</button>
+            <button data-montage-id="user">@montagejs</button>
+            <div data-montage-id="tweets" class="Tweets-results">
+                <div data-montage-id="tweet"></div>    
+            </div>
         </div>
-        <div data-montage-id="tweets" class="Tweets-results">
-            <div data-montage-id="tweet"></div>    
-        </div>
-        <button data-montage-id="refresh">Refresh</button>
     </div>
 </body>
 </html>

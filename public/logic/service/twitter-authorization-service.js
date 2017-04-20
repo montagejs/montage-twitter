@@ -3,11 +3,6 @@ var DataService = require("montage-data/logic/service/data-service").DataService
     DataSelector = require("montage-data/logic/service/data-selector").DataSelector;
 
  exports.TwitterAuthorizationService = RawDataService.specialize({
-    constructor: {
-        value: function TwitterAuthorizationService() {
-            RawDataService.call(this);
-        }
-    },
 
     providesAuthorization: {
         value: true

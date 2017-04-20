@@ -17,29 +17,30 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         }
     },
     
-    //Holds the Authenticate object after a succesfull authrorization
+    // Holds the Authenticate object after a succesfull authrorization
     isAuthenticated: {
         value: false
+    },
+
+    isAuthenticationLoading: {
+        value: null
     },
 
     authorizationManagerWillInstantiateAuthorizationPanelForService: {
         value: function(authorizationManager, authorizationPanel, authorizationService) {
 
-            console.log('authorizationManagerWillInstantiateAuthorizationPanelForService', arguments);
-            
         	// We put it in a slot
             this.auth.content = this.authorizationPanel = new authorizationPanel;
-
+            this.isAuthenticationLoading = true;
             return this.authorizationPanel;
         }
     },
 
     authorizationManagerDidAuthorizeService: {
         value: function(authorizationManager, dataService) {
-            
-            console.log('authorizationManagerDidAuthorizeService', arguments);
-
+            debugger;
             this.isAuthenticated = true;
+            this.isAuthenticationLoading = false;
         }
     }
 });

@@ -49,16 +49,24 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
     fetchRawData: {
         value: function (stream) {
 
-            var request,
-                self = this,
+            var self = this,
                 authorization = self.authorization,
                 criteria = stream.selector.criteria,
                 parameters = criteria.parameters;
 
-            return self.fetchHttpRawData(self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "", {
+            // TODO move to auth service
+            var authHeaders = {
                 'authorization-token': authorization.token,
                 'authorization-secret': authorization.tokenSecret
-            }, true).then(function (data) {
+            };
+
+            var apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
+
+            if (parameters.userName) {
+                apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
+            }
+
+            return self.fetchHttpRawData(apiUrl, authHeaders, true).then(function (data) {
                 if (data) {
                     self.addRawData(stream, data, criteria);
                     self.rawDataDone(stream);

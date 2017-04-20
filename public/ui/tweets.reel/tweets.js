@@ -14,14 +14,51 @@ var Component = require("montage/ui/component").Component,
  */
 exports.Tweets = Component.specialize(/** @lends Tweet# */ {
 
+    UPDATE_AUTO: {
+        value: false
+    },
+    UPDATE_METHOD: {
+        value: 'poll' // poll|longpoll|server-push|http2-push
+    },
+    UPDATE_INTERVAL: {
+        value: 3600000
+    },
+
+    isLoading: {
+        value: null
+    },
+    tweets: {
+        value: null
+    },
+    error: {
+        value: null
+    },
+    selectedTab: {
+        value: 'timeline'
+    },
+    selectedUser: {
+        value: null,
+    },
+
     constructor: {
         value: function Main() {
             var that = this;
 
             that.super();
 
+            // Init services
             that.initServices().then(function () {
-                that.loadTweets();  
+
+                // Load initals tweets
+                that.loadTweets().then(function () {
+
+                    // Init auto update
+                    if (self.UPDATE_AUTO) {
+                        if (self.UPDATE_METHOD === 'poll') {
+                            setTimeout(self.loadTweets.bind(self), self.UPDATE_INTERVAL);
+                        }
+                    }                    
+                });  
             });
         }
     },
@@ -35,17 +72,20 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
         },
     },
 
-    UPDATE_AUTO: {
-        value: true
-    },
-    UPDATE_METHOD: {
-        value: 'poll'
-    },
-    UPDATE_INTERVAL: {
-        value: 15000
+    loadTweets: {
+        value: function () {
+            var selectedTab = this.selectedTab;
+            if (selectedTab === 'timeline') {
+                return this.loadTimelineTweets();
+            } else if (selectedTab === 'profile') {
+                return this.loadProfileTweets();
+            } else if (selectedTab === 'user') {
+                return this.loadUserTweets();
+            }
+        }
     },
 
-    loadTweets: {
+    loadTimelineTweets: {
         value: function () {
             var self = this;
 
@@ -58,12 +98,66 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             
             var dataType = Tweet.TYPE;
             var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
-            
-            self.mainService.fetchData(dataQuery).then(function (tweets) {
+                
+            self.isLoading = true;
+            return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;
-                if (self.UPDATE_AUTO && self.UPDATE_METHOD === 'poll') {
-                    setTimeout(self.loadTweets.bind(self), self.UPDATE_INTERVAL);
-                }
+            }).catch(function (error) {
+                debugger;
+                self.error = error;
+            }).finally(function () {
+                self.isLoading = false;
+            });
+        }
+    },
+
+    loadProfileTweets: {
+        value: function () {
+            var self = this;
+
+            var dataExpression = "";
+            var dataParameters = {
+                object: 'statuses',
+                action: 'user_timeline'
+            };
+            var dataCriteria = new Criteria().initWithExpression(dataExpression, dataParameters);
+            
+            var dataType = Tweet.TYPE;
+            var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
+                
+            self.isLoading = true;
+            return self.mainService.fetchData(dataQuery).then(function (tweets) {
+                self.tweets = tweets;
+            }, function (error) {
+                self.error = error;
+            }).finally(function () {
+                self.isLoading = false;
+            });
+        }
+    },
+
+    loadUserTweets: {
+        value: function (user) {
+            var self = this;
+
+            var dataExpression = "";
+            var dataParameters = {
+                object: 'statuses',
+                action: 'user_timeline',
+                userName: self.selectedUser
+            };
+            var dataCriteria = new Criteria().initWithExpression(dataExpression, dataParameters);
+            
+            var dataType = Tweet.TYPE;
+            var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
+                
+            self.isLoading = true;
+            return self.mainService.fetchData(dataQuery).then(function (tweets) {
+                self.tweets = tweets;
+            }, function (error) {
+                self.error = error;
+            }).finally(function () {
+                self.isLoading = false;
             });
         }
     },
@@ -71,6 +165,28 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     handleRefreshAction: {
         value: function(event) {
             this.loadTweets();
+        }
+    },
+
+    handleTimelineAction: {
+        value: function(event) {
+            this.selectedTab = 'timeline';
+            this.selectedUser = null;
+            this.loadTimelineTweets();
+        }
+    },
+    handleProfileAction: {
+        value: function(event) {
+            this.selectedTab = 'profile';
+            this.selectedUser = null;
+            this.loadProfileTweets();
+        }
+    },
+    handleUserAction: {
+        value: function(event) {
+            this.selectedTab = 'user';
+            this.selectedUser = 'montagejs';
+            this.loadUserTweets();
         }
     },
 
