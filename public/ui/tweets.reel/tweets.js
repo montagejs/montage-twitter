@@ -109,7 +109,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             
             var dataType = Tweet.TYPE;
             var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
-                
+               
             self.isLoading = true;
             return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;

@@ -22,6 +22,12 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value: false
     },
 
+    _authorizationManager: {
+         get: function () {
+             return DataService.authorizationManager;
+         }
+     },
+
     isAuthenticationLoading: {
         value: null
     },
@@ -38,7 +44,6 @@ exports.Main = Component.specialize(/** @lends Main# */ {
 
     authorizationManagerDidAuthorizeService: {
         value: function(authorizationManager, dataService) {
-            debugger;
             this.isAuthenticated = true;
             this.isAuthenticationLoading = false;
         }

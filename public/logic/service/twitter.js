@@ -1,6 +1,7 @@
 var HttpService = require("montage-data/logic/service/http-service").HttpService,
     DataService = require("montage-data/logic/service/data-service").DataService,
-    DataSelector = require("montage-data/logic/service/data-selector").DataSelector;
+    DataSelector = require("montage-data/logic/service/data-selector").DataSelector,
+    Tweet = require('../model/tweet').Tweet;
 
 /**
  * Provides data for applications.
@@ -32,18 +33,16 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
     //
     //
 
-    constructor: {
-        value: function TwitterService() {
-            this.super();
-        }
-    },
-
-    //
-    //
-    //
-
     ENDPOINT: {
         value: '/api/twitter'
+    },
+
+    setHeadersForQuery: {
+        value: function (headers, query) {
+            var authorization = this.authorization[0];
+            headers['authorization-token'] = authorization.token;
+            headers['authorization-secret'] = authorization.secret;
+        }
     },
 
     fetchRawData: {
@@ -54,11 +53,6 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
                 criteria = stream.selector.criteria,
                 parameters = criteria.parameters;
 
-            // TODO move to auth service
-            var authHeaders = {
-                'authorization-token': authorization.token,
-                'authorization-secret': authorization.tokenSecret
-            };
 
             var apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
 
@@ -66,7 +60,7 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
                 apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
             }
 
-            return self.fetchHttpRawData(apiUrl, authHeaders, true).then(function (data) {
+            return self.fetchHttpRawData(apiUrl).then(function (data) {
                 if (data) {
                     self.addRawData(stream, data, criteria);
                     self.rawDataDone(stream);
@@ -83,6 +77,12 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
             object.user = {
                 name: rawData.user.name
             };
+        }
+    },
+
+    types: {
+        get: function () {
+            return [Tweet];
         }
     }
 });
