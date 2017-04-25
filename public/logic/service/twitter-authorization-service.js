@@ -3,6 +3,22 @@ var RawDataService = require("montage-data/logic/service/raw-data-service").RawD
 
  exports.TwitterAuthorizationService = RawDataService.specialize({
 
+    constructor: {
+        value: function () {
+            var self = this;
+            self.super();
+
+            // TODO unserialize TwitterAuthorization from session
+            /*
+            this.authorize({
+                "token":"14651812-m9Tefd9yLYCa03VM9Yanl9JiBpK9DMqhrcj9MsduE",
+                "tokenSecret":"6CkeDG2lZaFGyDWiIaKkYxoJXR9yB6Yk5bXrIgGcolWK7",
+                "profile":{}
+            });
+            */
+        }
+    },
+
     providesAuthorization: {
         value: true
     },
@@ -12,20 +28,14 @@ var RawDataService = require("montage-data/logic/service/raw-data-service").RawD
     },
 
     authorize: {
-        value: function (hashResult) {
+        value: function (panelResult) {
             var self = this;
             return new Promise(function (resolve, reject) {
-                var token = self._getHashParam(hashResult, 'result'),
-                    error = self._getHashParam(hashResult, 'error');
+                self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
 
-
-                if (error) {
-                    reject(error);
-                } else {
-                    self.authorization = self._mapRawDataToTwitterAuthorization(token);
-                    console.log("Authorization", self.authorization);
-                    resolve(self.authorization);
-                }
+                // TODO serialize TwitterAuthorization in session
+                console.log(self.authorization);
+                resolve(self.authorization);
             });
         }
      },
@@ -37,19 +47,8 @@ var RawDataService = require("montage-data/logic/service/raw-data-service").RawD
             authorization.role = rawData.profile._accessLevel;
             authorization.secret = rawData.tokenSecret;
             authorization.token = rawData.token;
+
             return authorization;
         }
-     },
-
-     _getHashParam: {
-         value: function (url, name) {
-             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-
-             var regex = new RegExp('[#&]' + name + '=([^;]*)'),
-                 results = regex.exec(url.hash);
-
-             return results === null ? '' : JSON.parse(decodeURIComponent(results[1].replace(/\+/g, ' ')));
-         }
      }
-
 });

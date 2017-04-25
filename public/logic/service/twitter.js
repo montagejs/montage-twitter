@@ -15,6 +15,7 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
     authorizationPolicy: {
         value: DataService.AuthorizationPolicyType.UpfrontAuthorizationPolicy
     },
+
     providesAuthorization: {
         value: false
     },
@@ -37,27 +38,37 @@ var HttpService = require("montage-data/logic/service/http-service").HttpService
         value: '/api/twitter'
     },
 
+    USE_JSON: {
+        value: false
+    },
+
     setHeadersForQuery: {
         value: function (headers, query) {
-            var authorization = this.authorization[0];
-            headers['authorization-token'] = authorization.token;
-            headers['authorization-secret'] = authorization.secret;
+            var authorization = this.authorization;
+            if (authorization && authorization.length) {
+                headers['authorization-token'] = authorization[0].token;
+                headers['authorization-secret'] = authorization[0].secret;
+            }
         }
     },
 
     fetchRawData: {
         value: function (stream) {
 
-            var self = this,
+            var apiUrl,
+                self = this,
                 authorization = self.authorization,
                 criteria = stream.selector.criteria,
                 parameters = criteria.parameters;
 
+            if (self.USE_JSON) {
+                apiUrl = 'logic/service/twitter-' + parameters.object + "-" + parameters.action + '.json';
+            } else {
 
-            var apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
-
-            if (parameters.userName) {
-                apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
+                apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
+                if (parameters.userName) {
+                    apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
+                }   
             }
 
             return self.fetchHttpRawData(apiUrl).then(function (data) {

@@ -34,7 +34,9 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
 
     _pollForCredentials: {
         value: function (popup) {
-            var pollingInterval = 500,
+
+            var self = this,
+                pollingInterval = 500,
                 polling;
             return new Promise(function (resolve, reject) {
 
@@ -75,6 +77,15 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                         }
 
                     }, pollingInterval);
+                }
+            }).then(function (popupWindowLocation) {
+                var token = self._getHashParam(popupWindowLocation, 'result'),
+                    error = self._getHashParam(popupWindowLocation, 'error');
+    
+                if (error) {
+                    return Promise.reject(error);
+                } else {
+                   return Promise.resolve(token);
                 }
             });
         }
@@ -124,13 +135,23 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
         }
     },
 
+    _getHashParam: {
+        value: function (url, name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+
+            var regex = new RegExp('[#&]' + name + '=([^;]*)'),
+                results = regex.exec(url.hash);
+
+            return results === null ? '' : JSON.parse(decodeURIComponent(results[1].replace(/\+/g, ' ')));
+        }
+    },
+
     handleLoginAction: {
         value: function(event) {
             var self = this,
                 popup = this._openPopup("/auth/twitter");
 
             this._pollForCredentials(popup).then(function (result) {
-                 console.log("Result", result);
                  return self.service.authorize(result);
             }).then(function (authorization) {
                 self.authorizationManagerPanel.approveAuthorization(authorization, self);

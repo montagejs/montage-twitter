@@ -41,16 +41,16 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     },
 
     constructor: {
-        value: function Main() {
-            var that = this;
+        value: function () {
+            var self = this;
 
-            that.super();
+            self.super();
 
             // Init services
-            that.initServices().then(function () {
+            self.initServices().then(function () {
 
                 // Load initals tweets
-                that.loadTweets().then(function () {
+                self.loadTweets().then(function () {
 
                     // Init auto update
                     if (self.UPDATE_AUTO) {
