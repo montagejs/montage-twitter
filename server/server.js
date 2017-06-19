@@ -27,12 +27,13 @@ function readFile(path) {
 }
 
 // Set default env
-process.env.TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD";
-process.env.TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi";
+const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD";
+const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi";
 
-process.env.APP_PORT = process.env.APP_PORT || 3000;
-process.env.APP_HOST = process.env.APP_HOST || 'localhost';
-process.env.APP_URL = process.env.APP_URL || 'https://' + process.env.APP_HOST + ':' + process.env.APP_PORT;
+const APP_SSL = process.env.APP_SSL || true;
+const APP_PORT = process.env.APP_PORT || 3000;
+const APP_HOST = process.env.APP_HOST || 'localhost';
+const APP_URL = process.env.APP_URL || (process.env.APP_SSL ? 'https' : 'http') + '://' + process.env.APP_HOST + ':' + process.env.APP_PORT;
 
 
 //
@@ -62,9 +63,9 @@ app.use(passport.initialize());
 
 passport.use(new TwitterStrategy({
     passReqToCallback: true,
-    consumerKey: process.env.TWITTER_CONSUMER_KEY,
-    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: process.env.APP_URL + "/auth/twitter/callback"
+    consumerKey: TWITTER_CONSUMER_KEY,
+    consumerSecret: TWITTER_CONSUMER_SECRET,
+    callbackURL: APP_URL + "/auth/twitter/callback"
   },
   function(req, token, tokenSecret, profile, next) {
     next(null, {
@@ -196,8 +197,8 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
     };
 
     var client = new Twitter({
-        consumer_key: process.env.TWITTER_CONSUMER_KEY,
-        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        consumer_key: TWITTER_CONSUMER_KEY,
+        consumer_secret: TWITTER_CONSUMER_SECRET,
         access_token_key: accesToken.token,
         access_token_secret: accesToken.secret
     });
@@ -226,28 +227,32 @@ app.use(function (err, req, res, next) {
 // Start http server
 //
 
-if (process.env.APP_PORT === 443) {
+if (APP_PORT === 443) {
   var forwardingServer = express();
 
   forwardingServer.all('*', function(req, res) {
-      return res.redirect("https://" + process.env.APP_URL + req.url);
+      return res.redirect("https://" + APP_URL + req.url);
   });
 
   forwardingServer.listen(80); 
 }
 
-var options = {
-    key: fs.readFileSync(ROOT_PATH + '/certs/server.key'),
-    cert:  fs.readFileSync(ROOT_PATH + '/certs/server.crt')
-};
+if (APP_SSL === true) {
 
-spdy
-  .createServer(options, app)
-  .listen(process.env.APP_PORT, function (error) {
-    if (error) {
-      console.error(error);
-      return process.exit(1);
-    } else {
-      console.log('Listening on port: ' + process.env.APP_PORT + '.');
-    }
-  });
+  spdy
+    .createServer({
+        key: fs.readFileSync(ROOT_PATH + '/certs/server.key'),
+        cert:  fs.readFileSync(ROOT_PATH + '/certs/server.crt')
+    }, app)
+    .listen(APP_PORT, function (error) {
+      if (error) {
+        console.error(error);
+        return process.exit(1);
+      } else {
+        console.log('(spdy) Listening on port: ' + APP_PORT + '.');
+      }
+    });
+} else {
+  app.listen(APP_PORT);
+  console.log('(http) Listening on port: ' + APP_PORT + '.');
+}
