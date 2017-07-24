@@ -33,7 +33,7 @@ const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjm
 const APP_SSL = process.env.APP_SSL || true;
 const APP_PORT = process.env.APP_PORT || 3000;
 const APP_HOST = process.env.APP_HOST || 'localhost';
-const APP_URL = process.env.APP_URL || (process.env.APP_SSL ? 'https' : 'http') + '://' + process.env.APP_HOST + ':' + process.env.APP_PORT;
+const APP_URL = process.env.APP_URL || (APP_SSL ? 'https' : 'http') + '://' + APP_HOST + ':' + APP_PORT;
 
 
 //
@@ -60,8 +60,7 @@ passport.deserializeUser(function(id, next) {
 });
 
 app.use(passport.initialize());
-
-passport.use(new TwitterStrategy({
+  passport.use(new TwitterStrategy({
     passReqToCallback: true,
     consumerKey: TWITTER_CONSUMER_KEY,
     consumerSecret: TWITTER_CONSUMER_SECRET,

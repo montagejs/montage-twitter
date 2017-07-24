@@ -1,4 +1,5 @@
-var AuthorizationPanel = require("montage-data/ui/authorization-panel.reel").AuthorizationPanel;
+var AuthorizationPanel = require("montage-data/ui/authorization-panel.reel").AuthorizationPanel,
+    Promise = require('montage/core/promise').Promise;
 
 
 function getHashParam(url, name) {
@@ -36,7 +37,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
         value: function (popup) {
 
             var self = this,
-                pollingInterval = 500,
+                pollingInterval = 100,
                 polling;
             return new Promise(function (resolve, reject) {
 
@@ -93,11 +94,21 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
 
     _openPopup: {
         value: function (url, options) {
-            var self = this,
-                popupOptions = self._stringifyOptions(self._prepareOptions(options)),
-                popupName = 'authorization-panel';
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                
+                var popupWindow,
+                    popupOptions = self._stringifyOptions(self._prepareOptions(options)),
+                    popupName = 'authorization-panel';
 
-            return window.open(url, popupName, popupOptions);
+                 popupWindow = window.open(url, popupName, popupOptions);
+
+                 if (popupWindow) {
+                    resolve(popupWindow)
+                 } else {
+                    reject(new Error('Unable to open popup'))
+                 }
+            });
         }
     },
 
@@ -110,10 +121,16 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                 preparedOptions = {
                     width: width,
                     height: height,
-                    status: 1,
-                    toolbar: 1,
-                    left: window.screenX + ((window.outerWidth - width) / 2),
-                    top: window.screenY + ((window.outerHeight - height) / 2.5)
+                    left: parseInt(window.screenX + ((window.outerWidth - width) / 2)),
+                    top: parseInt(window.screenY + ((window.outerHeight - height) / 2.5)),
+                    //toolbar: "no", 
+                    //location: "no", 
+                    directories: "no", 
+                    //status: "no", 
+                    menubar: "no",  
+                    scrollbars: "yes", 
+                    resizable: "no", 
+                    copyhistory: "no"
                 };
 
             Object.keys(options).forEach(function(key) {
@@ -146,25 +163,50 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
         }
     },
 
+    _getCredentials: {
+        value: function () {
+            return new Promise(function (resolve, reject) {
+                var credentials = localStorage.getItem('twitter-credentials', credentials);
+                if (credentials) {
+                    resolve(JSON.parse(credentials))
+                } else {
+                    reject(new Error('No credentials'));
+                }
+            });
+        }
+    },
+
+    _setCredentials: {
+        value: function (credentials) {
+            return new Promise(function (resolve, reject) {
+                localStorage.setItem('twitter-credentials', JSON.stringify(credentials));
+                resolve(credentials);
+            });
+        }
+    },
+
     handleLoginAction: {
         value: function(event) {
-            var self = this,
-                popup = this._openPopup("/auth/twitter");
+            var self = this;
 
-            this._pollForCredentials(popup).then(function (result) {
-                 return self.service.authorize(result);
+            self._getCredentials().catch(function () {
+                return self._openPopup("/auth/twitter").then(function (popup) {
+                    return self._pollForCredentials(popup).then(function (credentials) {
+                        return self._setCredentials(credentials);
+                    }).finally(function () {
+                        if (typeof popup.close === 'function') {
+                            popup.close();
+                        }
+                    });
+                })
+            }).then(function (credentials) {
+                 return self.service.authorize(credentials);
             }).then(function (authorization) {
                 self.authorizationManagerPanel.approveAuthorization(authorization, self);
             }).catch(function (error) {
                 console.error(error);
                 self.authorizationManagerPanel.cancelAuthorization();
-            }).finally(function () {
-                if (typeof popup.close === 'function') {
-                    popup.close();
-                }
-
-                self._popup = null;
-            });
+            })
         }
     },
 

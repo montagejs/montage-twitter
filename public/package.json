@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "main": "",
   "dependencies": {
-    "montage": "git://github.com/montagejs/montage.git#master",
-    "montage-data": "git://github.com/montagestudio/montage-data.git#tej/authorization-service",
-    "digit": "~0.5.0"
+    "digit": "^3.0.0",
+    "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop",
+    "montage": "^17.0.10",
+    "montage-data": "git://github.com/montagestudio/montage-data.git#tej/authorization-service"
   },
   "exclude": [
     "test"
