@@ -11,7 +11,7 @@ var passport = require('passport');
 
 // Path
 
-var ROOT_PATH = __dirname + '/..';
+var ROOT_PATH = __dirname;
 var PUBLIC_PATH = ROOT_PATH + '/public/';
 
 function readFile(path) {
@@ -31,7 +31,7 @@ const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMB
 const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi";
 
 const APP_SSL = process.env.APP_SSL || true;
-const APP_PORT = process.env.APP_PORT || 3000;
+const APP_PORT = process.env.APP_PORT || 8080;
 const APP_HOST = process.env.APP_HOST || 'localhost';
 const APP_URL = process.env.APP_URL || (APP_SSL ? 'https' : 'http') + '://' + APP_HOST + ':' + APP_PORT;
 

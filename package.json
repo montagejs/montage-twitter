@@ -1,25 +1,20 @@
 {
-  "name": "montage-twitter",
-  "version": "1.0.0",
-  "description": "A Simple Montage Twitter client using montage-data",
-  "private": true,
-  "license": "ISC",
-  "author": "",
-  "scripts": {
-    "start": "node server/server.js",
-    "start:demo": "concurrently \"node server/server.js\" \"open https://localhost:3000\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "montagestudio/montage-twitter"
-  },
+  "name": "montage-twitter-public",
+  "version": "0.1.0",
+  "main": "",
   "dependencies": {
-    "concurrently": "^3.4.0",
-    "express": "^4.15.2",
-    "express-session": "^1.15.2",
-    "passport": "^0.3.2",
-    "passport-twitter": "^1.0.4",
-    "spdy": "^3.4.4",
-    "twitter": "^1.7.0"
-  }
+    "digit": "^3.0.0",
+    "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop",
+    "montage": "^17.0.10",
+    "montage-data": "git://github.com/montagestudio/montage-data.git#tej/authorization-service"
+  },
+  "scripts": {
+    "start": "docker-compose up"
+  },
+  "exclude": [
+    "test"
+  ],
+  "bundle": [
+    "ui/main.reel"
+  ]
 }

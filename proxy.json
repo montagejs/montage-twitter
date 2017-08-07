@@ -1,0 +1,8 @@
+{
+  "pushURL": "https://localhost:8081/event-stream",
+  "transport": "ws://localhost:8081/",
+  "clientLogLevel": "debug",
+  "proxy": [
+    "https://6e114b20.ngrok.io/"
+  ]
+}

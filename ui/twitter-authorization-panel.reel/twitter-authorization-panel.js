@@ -25,7 +25,12 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
 
     enterDocument: {
         value: function () {
-            
+            var self = this;
+            self._getCredentials().then(function (credentials) {
+                 return self.service.authorize(credentials);
+            }).then(function (authorization) {
+                self.authorizationManagerPanel.approveAuthorization(authorization, self);
+            });
         }
     },
 
@@ -123,10 +128,10 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     height: height,
                     left: parseInt(window.screenX + ((window.outerWidth - width) / 2)),
                     top: parseInt(window.screenY + ((window.outerHeight - height) / 2.5)),
-                    //toolbar: "no", 
-                    //location: "no", 
+                    toolbar: "no", 
+                    location: "no", 
                     directories: "no", 
-                    //status: "no", 
+                    status: "no", 
                     menubar: "no",  
                     scrollbars: "yes", 
                     resizable: "no", 
@@ -188,7 +193,6 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     handleLoginAction: {
         value: function(event) {
             var self = this;
-
             self._getCredentials().catch(function () {
                 return self._openPopup("/auth/twitter").then(function (popup) {
                     return self._pollForCredentials(popup).then(function (credentials) {
@@ -212,7 +216,9 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
 
     logout: {
         value: function() {
-
+            var self = this;
+            self._setCredentials("");
+            self.authorizationManagerPanel.cancelAuthorization();
         }
     }
 });

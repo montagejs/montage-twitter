@@ -17,8 +17,7 @@ npm start
 ```
 
 3. Test
-Then Open you browser to "https://localhost:3000".
-
+Then Open you browser to "https://localhost:8080".
 
 # TODO
 - Add authentication persistance
