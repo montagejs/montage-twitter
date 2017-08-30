@@ -14,7 +14,8 @@
   "scripts": {
     "lint": "jshint .",
     "pretest": "npm run lint",
-    "start": "docker-compose up"
+    "start": "docker-compose up -d --build",
+    "stop": "docker-compose down"
   },
   "exclude": [
     "test"
