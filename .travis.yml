@@ -1,0 +1,49 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+#  - "4"
+#  - "6"
+  - "7"
+#  - "8"
+install:
+  # Update docker-engine using Ubuntu 'trusty' apt repo
+  - >
+    curl -sSL "https://get.docker.com/gpg" |
+     sudo -E apt-key add -
+  - >
+    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" |
+     sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update
+  - >
+    sudo apt-get -o Dpkg::Options::="--force-confdef" \
+     -o Dpkg::Options::="--force-confold" --assume-yes --allow-unauthenticated install docker-engine
+  - docker version
+  # Update docker-compose via pip
+  - sudo pip install docker-compose
+  - docker-compose version
+  # NodeJS Install
+  - "npm install"
+  # Add self-signed cert to System in case build need it
+  - sudo cp ./tls-keys/public-trust/democa.crt /usr/local/share/ca-certificates/democa.crt
+  - sudo chmod 644 /usr/local/share/ca-certificates/democa.crt
+  - sudo cp development/origin-server/public.crt /usr/local/share/ca-certificates/public.crt
+  - sudo chmod 644 /usr/local/share/ca-certificates/public.crt
+  # Update public certs
+  - sudo update-ca-certificates --verbose
+addons:
+  hosts:
+    - rest-accelerator.example.com
+before_script:
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
+  - export DOCKER_CLIENT_TIMEOUT=120
+  - docker-compose build
+script:
+  - docker-compose up -d
+  - sleep 25
+  - npm test
+  - docker ps | grep -q rest-accelerator
+  - docker ps | grep -q origin-server
+after_script:
+  - docker-compose down

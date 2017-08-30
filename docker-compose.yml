@@ -1,10 +1,10 @@
 version: "3.1"
 
 services:
-  montage-twitter-service:
+  twitter-service:
     ports:
       - "8080:8080"
     build:
-      context: ./docker/montage-twitter-service
+      context: ./docker/twitter-service
     volumes:
-      - ./:/home/montage-twitter-service/public/:ro
+      - ./:/home/twitter-service/public/:ro

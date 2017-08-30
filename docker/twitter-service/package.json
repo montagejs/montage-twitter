@@ -1,17 +1,13 @@
 {
-  "name": "montage-twitter-http-server",
+  "name": "montage-twitter-service",
   "version": "1.0.0",
   "description": "A Simple Montage Twitter client using montage-data",
   "private": true,
-  "license": "ISC",
+  "license": "",
   "author": "",
   "scripts": {
-    "start": "node server/server.js",
-    "start:demo": "concurrently \"node server/server.js\" \"open https://localhost:3000\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "montagestudio/montage-twitter"
+    "start": "node index.js",
+    "start:demo": "concurrently \"node index.js\" \"open https://localhost:3000\""
   },
   "dependencies": {
     "concurrently": "^3.4.0",

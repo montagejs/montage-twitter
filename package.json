@@ -1,14 +1,19 @@
 {
-  "name": "montage-twitter-public",
+  "name": "montage-twitter",
   "version": "0.1.0",
-  "main": "",
+  "description": "Twitter application made using MontageJS",
+  "license": "Copyright 2007-2017, Kaazing Corporation. All rights reserved.",
+  "author": "Montage Studio, inc. (http://montagestudio.com/)",
+  "private": true,
   "dependencies": {
     "digit": "^3.0.0",
-    "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop",
     "montage": "^17.0.10",
+    "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop",
     "montage-data": "git://github.com/montagestudio/montage-data.git#tej/authorization-service"
   },
   "scripts": {
+    "lint": "jshint .",
+    "pretest": "npm run lint",
     "start": "docker-compose up"
   },
   "exclude": [
@@ -16,5 +21,8 @@
   ],
   "bundle": [
     "ui/main.reel"
-  ]
+  ],
+  "devDependencies": {
+    "jshint": "^2.9.5"
+  }
 }
