@@ -1,5 +1,5 @@
 var Montage = require("montage").Montage,
-    DataObjectDescriptor = require("montage/data/model/data-object-descriptor").DataObjectDescriptor;
+    DataObjectDescriptor = require("montage-data/logic/model/data-object-descriptor").DataObjectDescriptor;
 
 /**
  * @class Tweet

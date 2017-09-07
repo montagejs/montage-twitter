@@ -2,7 +2,7 @@
  * @module ui/main.reel
  */
 var Component = require("montage/ui/component").Component,
-    DataService = require("montage/logic/service/data-service").DataService;
+    DataService = require("montage-data/logic/service/data-service").DataService;
 
 /**
  * @class Main

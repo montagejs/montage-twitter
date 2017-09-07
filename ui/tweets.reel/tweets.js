@@ -2,8 +2,8 @@
  * @module ui/main.reel
  */
 var Component = require("montage/ui/component").Component,
-    DataService = require("montage/logic/service/data-service").DataService,
-    DataSelector = require("montage/logic/service/data-selector").DataSelector,
+    DataService = require("montage-data/logic/service/data-service").DataService,
+    DataSelector = require("montage-data/logic/service/data-selector").DataSelector,
     Criteria = require("montage/core/criteria").Criteria,
     TwitterService = require('logic/service/twitter').TwitterService,
     Tweet = require('logic/model/tweet').Tweet;
@@ -67,7 +67,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     // Initialyze mainService
     //
 
-    // TODO use future montage/data/service/loader.reel
+    // TODO use future montage-data/service/loader.reel
     
     initServices: {
         value: function () {
