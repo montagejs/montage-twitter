@@ -31,11 +31,15 @@ var RawDataService = require("montage/data/service/raw-data-service").RawDataSer
         value: function (panelResult) {
             var self = this;
             return new Promise(function (resolve, reject) {
-                self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
+                if (panelResult) {
+                    self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
 
-                // TODO serialize TwitterAuthorization in session
-                console.log(self.authorization);
-                resolve(self.authorization);
+                    // TODO serialize TwitterAuthorization in session
+                    console.log(self.authorization);
+                    resolve(self.authorization);
+                } else {
+                    resolve(null);
+                }
             });
         }
      },

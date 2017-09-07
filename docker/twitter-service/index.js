@@ -1,5 +1,5 @@
 
-var http = require("http");             
+var http = require("http");
 var spdy = require('spdy');
 var express = require('express');
 var session = require('express-session');
@@ -12,7 +12,8 @@ var passport = require('passport');
 // Path
 
 var ROOT_PATH = __dirname;
-var PUBLIC_PATH = ROOT_PATH + '/public/';
+// var PUBLIC_PATH = ROOT_PATH + '/public/';
+var PUBLIC_PATH = ROOT_PATH + '/../../';
 
 function readFile(path) {
 	return new Promise(function (resolve, reject) {
@@ -126,7 +127,7 @@ app.get('/', function(req, res) {
       res.writeHead(200);
       res.end(files[0]);
 
-    }).catch(function (error) { 
+    }).catch(function (error) {
     	res.status(500).send(error.toString());
     });
 });
@@ -151,7 +152,7 @@ app.get('/auth/twitter', function (req, res, next) {
 
 // Handle auth process callback
 app.get('/auth/twitter/callback', function (req, res, next) {
-  
+
   var options = {
     failWithError: true,
     session: false,
@@ -175,7 +176,7 @@ app.get('/auth/twitter/result', function (req, res, next) {
 
 // Twitter api proxy
 app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next) {
-  
+
   var twitterObject = req.params.twitter_object,
       twitterAction = req.params.twitter_action,
       twitterParams = req.query;
@@ -201,7 +202,7 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
         access_token_key: accesToken.token,
         access_token_secret: accesToken.secret
     });
-     
+
     // TODO implement http2 push
     // - https://blog.twitter.com/2008/what-does-rate-limit-exceeded-mean-updated
     console.log('Twitter API call', twitterObject, twitterAction, twitterParams);
@@ -219,7 +220,7 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
 app.use(function (err, req, res, next) {
   console.error(err);
   res.status(500);
-  res.end(err.message);  
+  res.end(err.message);
 })
 
 //
@@ -233,7 +234,7 @@ if (APP_PORT === 443) {
       return res.redirect("https://" + APP_URL + req.url);
   });
 
-  forwardingServer.listen(80); 
+  forwardingServer.listen(80);
 }
 
 if (APP_SSL === true) {

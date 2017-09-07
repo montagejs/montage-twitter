@@ -1,9 +1,6 @@
-/**
- * @module ui/main.reel
- */
 var Component = require("montage/ui/component").Component,
-    DataService = require("montage/logic/service/data-service").DataService,
-    DataSelector = require("montage/logic/service/data-selector").DataSelector,
+    DataService = require("montage/data/service/data-service").DataService,
+    DataQuery = require("montage/data/model/data-query").DataQuery,
     Criteria = require("montage/core/criteria").Criteria,
     TwitterService = require('logic/service/twitter').TwitterService,
     Tweet = require('logic/model/tweet').Tweet;
@@ -41,15 +38,16 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     },
 
     constructor: {
-        value: function () {
+        value: function Tweets () {
             var self = this;
 
             self.super();
 
+
             // Init services
             self.initServices().then(function () {
 
-                // Load initals tweets
+                //Load initals tweets
                 self.loadTweets().then(function () {
 
                     // Init auto update
@@ -57,30 +55,34 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
                         if (self.UPDATE_METHOD === 'poll') {
                             setTimeout(self.loadTweets.bind(self), self.UPDATE_INTERVAL);
                         }
-                    }                    
-                });  
+                    }
+                });
             });
         }
     },
+
+
+    /***************
+     * [TJ] 2 Patterns of adding a child-service
+     * 1. Add a child
+     */
 
     //
     // Initialyze mainService
     //
 
     // TODO use future montage/data/service/loader.reel
-    
+
     initServices: {
         value: function () {
-            this.mainService = mainService = new DataService();
-            var twitterService = new TwitterService();
-            this.mainService.addChildService(twitterService);
-            return Promise.resolve();
-        },
+            this.mainService = new DataService();
+            return this.mainService.registerChildService(new TwitterService());
+        }
     },
 
 
     //
-    // Business layer using Service 
+    // Business layer using Service
     //
 
     loadTweets: {
@@ -106,10 +108,9 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
                 action: 'home_timeline'
             };
             var dataCriteria = new Criteria().initWithExpression(dataExpression, dataParameters);
-            
-            var dataType = Tweet.TYPE;
-            var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
-               
+
+            var dataQuery = DataQuery.withTypeAndCriteria(Tweet, dataCriteria);
+
             self.isLoading = true;
             return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;
@@ -132,10 +133,9 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
                 action: 'user_timeline'
             };
             var dataCriteria = new Criteria().initWithExpression(dataExpression, dataParameters);
-            
-            var dataType = Tweet.TYPE;
-            var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
-                
+
+            var dataQuery = DataQuery.withTypeAndCriteria(Tweet, dataCriteria);
+
             self.isLoading = true;
             return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;
@@ -158,10 +158,9 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
                 userName: self.selectedUser
             };
             var dataCriteria = new Criteria().initWithExpression(dataExpression, dataParameters);
-            
-            var dataType = Tweet.TYPE;
-            var dataQuery = DataSelector.withTypeAndCriteria(dataType, dataCriteria);
-                
+
+            var dataQuery = DataQuery.withTypeAndCriteria(Tweet, dataCriteria);
+
             self.isLoading = true;
             return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;

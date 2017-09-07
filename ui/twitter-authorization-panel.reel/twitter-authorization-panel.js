@@ -1,4 +1,4 @@
-var AuthorizationPanel = require("montage/data/ui/authorization-panel.reel").AuthorizationPanel,
+var AuthorizationPanel = require("montage/ui/authorization-panel.reel").AuthorizationPanel,
     Promise = require('montage/core/promise').Promise;
 
 
@@ -87,7 +87,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
             }).then(function (popupWindowLocation) {
                 var token = self._getHashParam(popupWindowLocation, 'result'),
                     error = self._getHashParam(popupWindowLocation, 'error');
-    
+
                 if (error) {
                     return Promise.reject(error);
                 } else {
@@ -101,7 +101,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
         value: function (url, options) {
             var self = this;
             return new Promise(function (resolve, reject) {
-                
+
                 var popupWindow,
                     popupOptions = self._stringifyOptions(self._prepareOptions(options)),
                     popupName = 'authorization-panel';
@@ -128,13 +128,13 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     height: height,
                     left: parseInt(window.screenX + ((window.outerWidth - width) / 2)),
                     top: parseInt(window.screenY + ((window.outerHeight - height) / 2.5)),
-                    toolbar: "no", 
-                    location: "no", 
-                    directories: "no", 
-                    status: "no", 
-                    menubar: "no",  
-                    scrollbars: "yes", 
-                    resizable: "no", 
+                    toolbar: "no",
+                    location: "no",
+                    directories: "no",
+                    status: "no",
+                    menubar: "no",
+                    scrollbars: "yes",
+                    resizable: "no",
                     copyhistory: "no"
                 };
 

@@ -1,8 +1,5 @@
-/**
- * @module ui/main.reel
- */
 var Component = require("montage/ui/component").Component,
-    DataService = require("montage/logic/service/data-service").DataService;
+    DataService = require("montage/data/service/data-service").DataService;
 
 /**
  * @class Main
@@ -12,11 +9,10 @@ exports.Main = Component.specialize(/** @lends Main# */ {
     constructor: {
         value: function Main() {
             this.super();
-
             DataService.authorizationManager.delegate = this;
         }
     },
-    
+
     // Holds the Authenticate object after a succesfull authrorization
     isAuthenticated: {
         value: false

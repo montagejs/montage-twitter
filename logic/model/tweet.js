@@ -1,5 +1,6 @@
 var Montage = require("montage").Montage,
-    DataObjectDescriptor = require("montage/data/model/data-object-descriptor").DataObjectDescriptor;
+    ModuleReference = require("montage/core/module-reference").ModuleReference,
+    ModuleObjectDescriptor = require("montage/core/meta/module-object-descriptor").ModuleObjectDescriptor;
 
 /**
  * @class Tweet
@@ -15,14 +16,15 @@ exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     }
 }, {
 
-    /**
-     * @type {external:DataObjectDescriptor}
-     */
-    TYPE: {
-        //get: DataObjectDescriptor.getterFor(exports, "Tweet"),
+    objectDescriptor: {
         get: function () {
-            Tweet.objectPrototype = Tweet;
-            return Tweet;
+            return this._objectDescriptor || (this._objectDescriptor = new ModuleObjectDescriptor().initWithModuleAndExportName(this.moduleReference, "Tweet"));
+        }
+    },
+
+    moduleReference: {
+        get: function () {
+            return this._moduleReference || (this._moduleReference = new ModuleReference().initWithIdAndRequire("logic/model/tweet", require));
         }
     }
 });
