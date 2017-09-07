@@ -3,8 +3,8 @@
 FROM node:7.9.0
 
 
-RUN mkdir /home/montage-twitter-service
-WORKDIR  /home/montage-twitter-service
+RUN mkdir /home/twitter-service
+WORKDIR  /home/twitter-service
 
 # Install package
 ADD package.json ./
