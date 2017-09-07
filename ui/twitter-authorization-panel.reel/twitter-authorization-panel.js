@@ -1,4 +1,4 @@
-var AuthorizationPanel = require("montage-data/ui/authorization-panel.reel").AuthorizationPanel,
+var AuthorizationPanel = require("montage/data/ui/authorization-panel.reel").AuthorizationPanel,
     Promise = require('montage/core/promise').Promise;
 
 
