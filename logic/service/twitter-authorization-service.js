@@ -1,4 +1,4 @@
-var RawDataService = require("montage-data/logic/service/raw-data-service").RawDataService,
+var RawDataService = require("montage/data/service/raw-data-service").RawDataService,
     TwitterAuthorization = require("logic/model/twitter-authorization").TwitterAuthorization;
 
  exports.TwitterAuthorizationService = RawDataService.specialize({

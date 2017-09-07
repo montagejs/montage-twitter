@@ -1,6 +1,6 @@
-var HttpService = require("montage-data/logic/service/http-service").HttpService,
-    DataService = require("montage-data/logic/service/data-service").DataService,
-    DataSelector = require("montage-data/logic/service/data-selector").DataSelector,
+var HttpService = require("montage/data/service/http-service").HttpService,
+    DataService = require("montage/data/service/data-service").DataService,
+    DataSelector = require("montage/data/service/data-selector").DataSelector,
     Tweet = require('../model/tweet').Tweet;
 
 /**
