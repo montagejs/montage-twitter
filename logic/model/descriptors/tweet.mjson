@@ -1,0 +1,15 @@
+{
+    "root": {
+        "prototype": "montage/core/meta/module-object-descriptor",
+        "properties": {
+            "name": "Tweet",
+            "objectDescriptorModule": {
+                "%": "logic/model/descriptors/tweet.mjson"
+            },
+            "exportName": "Tweet",
+            "module": {
+                "%": "logic/model/tweet"
+            }
+        }
+    }
+}

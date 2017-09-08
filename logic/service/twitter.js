@@ -9,7 +9,7 @@ var HttpService = require("montage/data/service/http-service").HttpService,
  * @link https://dev.twitter.com/rest/
  * @extends external:DataService
  */
- exports.TwitterService = HttpService.specialize(/** @lends TwitterService.prototype */ {
+exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends TwitterService.prototype */ {
 
     authorizationPolicy: {
         value: DataService.AuthorizationPolicy.UP_FRONT
@@ -84,9 +84,9 @@ var HttpService = require("montage/data/service/http-service").HttpService,
         }
     },
 
-    types: {
-        get: function () {
-            return [Tweet.objectDescriptor];
-        }
-    }
+    // types: {
+    //     get: function () {
+    //         return [Tweet.objectDescriptor];
+    //     }
+    // }
 });

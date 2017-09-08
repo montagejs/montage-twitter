@@ -16,15 +16,15 @@ exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     }
 }, {
 
-    objectDescriptor: {
-        get: function () {
-            return this._objectDescriptor || (this._objectDescriptor = new ModuleObjectDescriptor().initWithModuleAndExportName(this.moduleReference, "Tweet"));
-        }
-    },
-
-    moduleReference: {
-        get: function () {
-            return this._moduleReference || (this._moduleReference = new ModuleReference().initWithIdAndRequire("logic/model/tweet", require));
-        }
-    }
+    // objectDescriptor: {
+    //     get: function () {
+    //         return this._objectDescriptor || (this._objectDescriptor = new ModuleObjectDescriptor().initWithModuleAndExportName(this.moduleReference, "Tweet"));
+    //     }
+    // },
+    //
+    // moduleReference: {
+    //     get: function () {
+    //         return this._moduleReference || (this._moduleReference = new ModuleReference().initWithIdAndRequire("logic/model/tweet", require));
+    //     }
+    // }
 });

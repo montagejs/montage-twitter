@@ -1,7 +1,8 @@
 var Component = require("montage/ui/component").Component,
+    Criteria = require("montage/core/criteria").Criteria,
     DataService = require("montage/data/service/data-service").DataService,
     DataQuery = require("montage/data/model/data-query").DataQuery,
-    Criteria = require("montage/core/criteria").Criteria,
+    Deserializer = require("montage/core/serialization/deserializer/montage-deserializer").MontageDeserializer,
     TwitterService = require('logic/service/twitter').TwitterService,
     Tweet = require('logic/model/tweet').Tweet;
 
@@ -75,8 +76,16 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
 
     initServices: {
         value: function () {
-            this.mainService = new DataService();
-            return this.mainService.registerChildService(new TwitterService());
+            // this.mainService = new DataService();
+            // return this.mainService.registerChildService(new TwitterService());
+            var self = this;
+            return require.async("data/montage-data.mjson").then(function (descriptor) {
+                var deserializer = new Deserializer().init(JSON.stringify(descriptor), require);
+                return deserializer.deserializeObject();
+            }).then(function (service) {
+                self.mainService = service;
+                return service;
+            });
         }
     },
 

@@ -1,0 +1,16 @@
+{
+    "root": {
+        "prototype": "logic/service/twitter",
+        "properties": {
+            "name": "TwitterService",
+            "exportName": "TwitterService",
+            "types": [
+                {"@": "tweet"}
+            ]
+        }
+    },
+
+    "tweet": {
+        "object": "logic/model/descriptors/tweet.mjson"
+    }
+}
