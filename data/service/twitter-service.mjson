@@ -11,6 +11,6 @@
     },
 
     "tweet": {
-        "object": "logic/model/descriptors/tweet.mjson"
+        "object": "data/model/tweet.mjson"
     }
 }

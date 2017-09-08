@@ -10,7 +10,7 @@
     },
 
     "tweetService": {
-        "object": "data/twitter-service.mjson"
+        "object": "data/service/twitter-service.mjson"
     }
 }
 

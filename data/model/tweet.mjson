@@ -4,7 +4,7 @@
         "properties": {
             "name": "Tweet",
             "objectDescriptorModule": {
-                "%": "logic/model/descriptors/tweet.mjson"
+                "%": "data/model/tweet.mjson"
             },
             "exportName": "Tweet",
             "module": {
