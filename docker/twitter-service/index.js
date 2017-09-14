@@ -240,8 +240,8 @@ if (APP_SSL === true) {
 
   spdy
     .createServer({
-        key: fs.readFileSync(ROOT_PATH + '/certs/server.key'),
-        cert:  fs.readFileSync(ROOT_PATH + '/certs/server.crt')
+        key: fs.readFileSync(ROOT_PATH + '/certs/private.key'),
+        cert:  fs.readFileSync(ROOT_PATH + '/certs/public.crt')
     }, app)
     .listen(APP_PORT, function (error) {
       if (error) {
