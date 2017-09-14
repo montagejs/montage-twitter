@@ -12,7 +12,7 @@ var passport = require('passport');
 // Path
 
 var ROOT_PATH = __dirname;
-var PUBLIC_PATH = ROOT_PATH + '/public/';
+var PUBLIC_PATH = process.env.PUBLIC_PATH || ROOT_PATH + '/public/';
 
 function readFile(path) {
 	return new Promise(function (resolve, reject) {
