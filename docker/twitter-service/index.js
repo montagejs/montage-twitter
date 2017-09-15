@@ -1,6 +1,6 @@
 
 var http = require("http");             
-var spdy = require('spdy');
+var https = require('https');
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
@@ -8,6 +8,11 @@ var fs = require('fs');
 var Twitter = require('twitter');
 var TwitterStrategy = require('passport-twitter');
 var passport = require('passport');
+
+/* 
+// To enable Push
+var https = require('spdy');
+*/
 
 // Path
 
@@ -238,7 +243,7 @@ if (APP_PORT === 443) {
 
 if (APP_SSL === true) {
 
-  spdy
+  https
     .createServer({
         key: fs.readFileSync(ROOT_PATH + '/certs/private.key'),
         cert:  fs.readFileSync(ROOT_PATH + '/certs/public.crt')
@@ -248,7 +253,7 @@ if (APP_SSL === true) {
         console.error(error);
         return process.exit(1);
       } else {
-        console.log('(spdy) Listening on port: ' + APP_PORT + '.');
+        console.log('(https) Listening on port: ' + APP_PORT + '.');
       }
     });
 } else {
