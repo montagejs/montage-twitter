@@ -33,9 +33,6 @@ var RawDataService = require("montage/data/service/raw-data-service").RawDataSer
             return new Promise(function (resolve, reject) {
                 if (panelResult) {
                     self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
-
-                    // TODO serialize TwitterAuthorization in session
-                    console.log(self.authorization);
                     resolve(self.authorization);
                 } else {
                     resolve(null);

@@ -3,6 +3,11 @@
         "prototype": "montage/core/meta/module-object-descriptor",
         "properties": {
             "name": "Tweet",
+            "propertyDescriptors": [
+                {"@": "creationDate"},
+                {"@": "id"},
+                {"@": "text"}
+            ],
             "objectDescriptorModule": {
                 "%": "data/model/tweet.mjson"
             },
@@ -10,6 +15,39 @@
             "module": {
                 "%": "logic/model/tweet"
             }
+        }
+    },
+
+    "creationDate": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "creationDate",
+            "valueType": "date"
+        }
+    },
+
+    "id": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "id",
+            "valueType": "string"
+        }
+    },
+
+    "text": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "text",
+            "valueType": "string"
+        }
+    },
+
+    "user": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "user",
+            "valueType": "string",
+            "_comment": "Tweets carry a robust user object. This can be fleshed out much more"
         }
     }
 }

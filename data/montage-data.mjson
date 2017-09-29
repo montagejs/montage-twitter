@@ -4,13 +4,18 @@
         "properties": {
             "name": "DataService",
             "childServices": [
-                {"@": "tweetService"}
+                {"@": "tweetService"},
+                {"@": "userService"}
             ]
         }
     },
 
     "tweetService": {
         "object": "data/service/twitter-service.mjson"
+    },
+
+    "userService": {
+        "object": "data/service/user-service.mjson"
     }
 }
 

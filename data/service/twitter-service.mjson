@@ -1,9 +1,12 @@
 {
     "root": {
-        "prototype": "logic/service/twitter",
+        "prototype": "logic/service/twitter-service",
         "properties": {
             "name": "TwitterService",
             "exportName": "TwitterService",
+            "mappings": [
+                {"@": "tweetMapping"}
+            ],
             "types": [
                 {"@": "tweet"}
             ]
@@ -12,5 +15,9 @@
 
     "tweet": {
         "object": "data/model/tweet.mjson"
+    },
+
+    "tweetMapping": {
+        "object": "data/mapping/tweet-mapping.mjson"
     }
 }

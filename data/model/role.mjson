@@ -1,0 +1,26 @@
+{
+    "root": {
+        "prototype": "montage/core/meta/module-object-descriptor",
+        "properties": {
+            "name": "Role",
+            "propertyDescriptors": [
+                {"@": "id"}
+            ],
+            "objectDescriptorModule": {
+                "%": "data/model/user.mjson"
+            },
+            "exportName": "Role",
+            "module": {
+                "%": "logic/model/role"
+            }
+        }
+    },
+
+    "id": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "id",
+            "valueType": "string"
+        }
+    }
+}

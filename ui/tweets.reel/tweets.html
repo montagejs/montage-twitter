@@ -20,7 +20,7 @@
                     "element": { "#": "tweets" }
                 },
                 "bindings": {
-                    "content": { "<->": "@owner.tweets" }
+                    "content": { "<-": "!@owner.user.defined() ? [] : @owner.selectedTab == 'timeline' ? @owner.user.timelineTweets : @owner.selectedTab == 'profile' ? @owner.user.tweets : []" }
                 }
             },
             "tweet": {
@@ -31,7 +31,7 @@
                     "element": { "#": "tweet" }
                 },
                 "bindings": {
-                    "value": { "<->": "@tweets:iteration.object" }
+                    "value": { "<-": "@tweets:iteration.object" }
                 }
             },
             "refresh": {
