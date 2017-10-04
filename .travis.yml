@@ -25,15 +25,10 @@ install:
   # NodeJS Install
   - "npm install"
   # Add self-signed cert to System in case build need it
-  - sudo cp ./tls-keys/public-trust/democa.crt /usr/local/share/ca-certificates/democa.crt
-  - sudo chmod 644 /usr/local/share/ca-certificates/democa.crt
-  - sudo cp development/origin-server/public.crt /usr/local/share/ca-certificates/public.crt
+  - sudo cp docker/twitter-service/public.crt /usr/local/share/ca-certificates/public.crt
   - sudo chmod 644 /usr/local/share/ca-certificates/public.crt
   # Update public certs
   - sudo update-ca-certificates --verbose
-addons:
-  hosts:
-    - rest-accelerator.example.com
 before_script:
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
@@ -43,7 +38,6 @@ script:
   - docker-compose up -d
   - sleep 25
   - npm test
-  - docker ps | grep -q rest-accelerator
-  - docker ps | grep -q origin-server
+  - docker ps | grep -q twitter-service
 after_script:
   - docker-compose down
