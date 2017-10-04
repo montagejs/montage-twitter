@@ -25,7 +25,7 @@ install:
   # NodeJS Install
   - "npm install"
   # Add self-signed cert to System in case build need it
-  - sudo cp docker/twitter-service/public.crt /usr/local/share/ca-certificates/public.crt
+  - sudo cp docker/twitter-service/certs/public.crt /usr/local/share/ca-certificates/public.crt
   - sudo chmod 644 /usr/local/share/ca-certificates/public.crt
   # Update public certs
   - sudo update-ca-certificates --verbose
