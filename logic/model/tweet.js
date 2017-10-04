@@ -1,5 +1,4 @@
-var Montage = require("montage").Montage,
-    DataObjectDescriptor = require("montage/data/model/data-object-descriptor").DataObjectDescriptor;
+var Montage = require("montage").Montage;
 
 /**
  * @class Tweet
@@ -9,20 +8,5 @@ var Montage = require("montage").Montage,
 exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     temp: {
         value: null
-    },
-    constructor: {
-        value: function Tweet() {}
-    }
-}, {
-
-    /**
-     * @type {external:DataObjectDescriptor}
-     */
-    TYPE: {
-        //get: DataObjectDescriptor.getterFor(exports, "Tweet"),
-        get: function () {
-            Tweet.objectPrototype = Tweet;
-            return Tweet;
-        }
     }
 });

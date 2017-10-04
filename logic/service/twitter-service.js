@@ -1,7 +1,6 @@
 var HttpService = require("montage/data/service/http-service").HttpService,
     DataService = require("montage/data/service/data-service").DataService,
-    DataSelector = require("montage/data/service/data-selector").DataSelector,
-    Tweet = require('../model/tweet').Tweet;
+    Tweet = require('logic/model/tweet').Tweet;
 
 /**
  * Provides data for applications.
@@ -10,10 +9,10 @@ var HttpService = require("montage/data/service/http-service").HttpService,
  * @link https://dev.twitter.com/rest/
  * @extends external:DataService
  */
- exports.TwitterService = HttpService.specialize(/** @lends TwitterService.prototype */ {
-        
+exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends TwitterService.prototype */ {
+
     authorizationPolicy: {
-        value: DataService.AuthorizationPolicyType.UpfrontAuthorizationPolicy
+        value: DataService.AuthorizationPolicy.UP_FRONT
     },
 
     providesAuthorization: {
@@ -29,10 +28,6 @@ var HttpService = require("montage/data/service/http-service").HttpService,
             authorizationService.connectionDescriptor = this.authorizationDescriptor;
         }
     },
-
-    //
-    //
-    //
 
     ENDPOINT: {
         value: '/api/twitter'
@@ -54,12 +49,10 @@ var HttpService = require("montage/data/service/http-service").HttpService,
 
     fetchRawData: {
         value: function (stream) {
-
-            var apiUrl,
-                self = this,
-                authorization = self.authorization,
-                criteria = stream.selector.criteria,
-                parameters = criteria.parameters;
+            var self = this,
+                criteria = stream.query.criteria,
+                parameters = criteria.parameters,
+                apiUrl;
 
             if (self.USE_JSON) {
                 apiUrl = 'logic/service/twitter-' + parameters.object + "-" + parameters.action + '.json';
@@ -68,20 +61,20 @@ var HttpService = require("montage/data/service/http-service").HttpService,
                 apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
                 if (parameters.userName) {
                     apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
-                }   
+                }
             }
 
             return self.fetchHttpRawData(apiUrl).then(function (data) {
                 if (data) {
-                    self.addRawData(stream, data, criteria);
+                    self.addRawData(stream, data);
                     self.rawDataDone(stream);
                 }
             });
         }
     },
 
-    mapFromRawData: {
-        value: function (object, rawData, criteria) {
+    mapRawDataToObject: {
+        value: function (rawData, object) {
             object.id = rawData.id;
             object.text = rawData.text;
             object.created_at = rawData.created_at;
@@ -91,9 +84,9 @@ var HttpService = require("montage/data/service/http-service").HttpService,
         }
     },
 
-    types: {
-        get: function () {
-            return [Tweet];
-        }
-    }
+    // types: {
+    //     get: function () {
+    //         return [Tweet.objectDescriptor];
+    //     }
+    // }
 });

@@ -1,0 +1,108 @@
+{
+    "root": {
+        "prototype": "montage/core/meta/module-object-descriptor",
+        "properties": {
+            "name": "User",
+            "propertyDescriptors": [
+                {"@": "avatar"},
+                {"@": "handle"},
+                {"@": "id"},
+                {"@": "name"},
+                {"@": "role"},
+                {"@": "tweets"},
+                {"@": "timelineTweets"}
+            ],
+            "objectDescriptorModule": {
+                "%": "data/model/user.mjson"
+            },
+            "exportName": "User",
+            "module": {
+                "%": "logic/model/user"
+            }
+        }
+    },
+
+
+    "avatar": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "avatar",
+            "valueType": "string"
+        }
+    },
+
+    "handle": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "handle",
+            "valueType": "string"
+        }
+    },
+
+    "id": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "id",
+            "valueType": "string"
+        }
+    },
+    
+    "name": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "name",
+            "valueType": "string"
+        }
+    },
+
+    "role": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "role",
+            "cardinality": 1,
+            "valueDescriptor": {"@": "role_reference"}
+        }
+    },
+
+    "role_reference": {
+        "prototype": "montage/core/meta/object-descriptor-reference",
+        "properties": {
+            "valueReference": {
+                "objectDescriptorName": "Role",
+                "prototypeName": "Role",
+                "objectDescriptorModule": {"%": "data/model/role.mjson"}
+            }
+        }
+    },
+
+    "tweet_reference": {
+        "prototype": "montage/core/meta/object-descriptor-reference",
+        "properties": {
+            "valueReference": {
+                "objectDescriptorName": "Tweet",
+                "prototypeName": "Tweet",
+                "objectDescriptorModule": {"%": "data/model/tweet.mjson"}
+            }
+        }
+    },
+
+    "tweets": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "tweets",
+            "cardinality": -1,
+            "valueDescriptor": {"@": "tweet_reference"},
+            "objectDescriptor": {"@": "root"}
+        }
+    },
+
+    "timelineTweets": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "properties": {
+            "name": "timelineTweets",
+            "cardinality": -1,
+            "valueDescriptor": {"@": "tweet_reference"},
+            "objectDescriptor": {"@": "root"}
+        }
+    }
+}

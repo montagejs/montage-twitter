@@ -1,0 +1,45 @@
+{
+    "root": {
+        "prototype": "montage/data/service/expression-data-mapping",
+        "properties": {
+            "objectDescriptor": {"@": "TweetDescriptorReference"},
+            "rawDataPrimaryKeys":["id"],
+            "objectMapping": {
+                "rules": {
+                    "creationDate": {
+                        "<-": "created_at",
+                        "converter": {"@": "StringToMomentConverter"}
+                    },
+                    "id": {"<->": "id"},
+                    "text": {"<-": "text"}
+                }
+            },
+            "rawDataMapping": {
+                "rules": {
+                    "text": {"<-": "text"}
+                }
+            },
+            "requisitePropertyNames": [
+                "creationDate", "id", "text"
+            ]
+        }
+    },
+
+
+    "StringToMomentConverter": {
+        "prototype": "logic/converter/string-to-moment-converter",
+        "properties": {
+        }
+    },
+    
+    "TweetDescriptorReference": {
+        "prototype": "montage/core/meta/object-descriptor-reference",
+        "properties": {
+            "valueReference": {
+                "objectDescriptor": "Tweet",
+                "prototypeName": "Tweet",
+                "objectDescriptorModule": {"%": "data/model/tweet.mjson"}
+            }
+        }
+    }
+}
