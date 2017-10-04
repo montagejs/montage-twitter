@@ -1,5 +1,8 @@
 # montage-twitter
 
+[![Build Status](https://travis-ci.com/kaazing/montage-twitter.svg?token=DkxazY7pbviHZyy38ZZb&branch=master)](https://travis-ci.com/kaazing/montage-twitter)
+
+
 This is a sample app that use montage-data authentication to fetch authenticated user twitter timeline.
 
 # Quick start
