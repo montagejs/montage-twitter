@@ -12,8 +12,8 @@ RUN npm install
 
 # Import certs
 RUN mkdir certs
-ADD certs/server.key certs/server.key
-ADD certs/server.crt certs/server.crt
+ADD certs/private.key certs/private.key
+ADD certs/public.crt certs/public.crt
 
 # Then add source after install
 ADD index.js index.js

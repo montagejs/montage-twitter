@@ -1,6 +1,6 @@
 
 var http = require("http");             
-var spdy = require('spdy');
+var https = require('https');
 var express = require('express');
 var session = require('express-session');
 var path = require('path');
@@ -9,10 +9,15 @@ var Twitter = require('twitter');
 var TwitterStrategy = require('passport-twitter');
 var passport = require('passport');
 
+/* 
+// To enable Push
+var https = require('spdy');
+*/
+
 // Path
 
 var ROOT_PATH = __dirname;
-var PUBLIC_PATH = ROOT_PATH + '/public/';
+var PUBLIC_PATH = process.env.PUBLIC_PATH || ROOT_PATH + '/public/';
 
 function readFile(path) {
 	return new Promise(function (resolve, reject) {
@@ -238,17 +243,17 @@ if (APP_PORT === 443) {
 
 if (APP_SSL === true) {
 
-  spdy
+  https
     .createServer({
-        key: fs.readFileSync(ROOT_PATH + '/certs/server.key'),
-        cert:  fs.readFileSync(ROOT_PATH + '/certs/server.crt')
+        key: fs.readFileSync(ROOT_PATH + '/certs/private.key'),
+        cert:  fs.readFileSync(ROOT_PATH + '/certs/public.crt')
     }, app)
     .listen(APP_PORT, function (error) {
       if (error) {
         console.error(error);
         return process.exit(1);
       } else {
-        console.log('(spdy) Listening on port: ' + APP_PORT + '.');
+        console.log('(https) Listening on port: ' + APP_PORT + '.');
       }
     });
 } else {

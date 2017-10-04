@@ -18,11 +18,21 @@
 	
     <title>Twitter Montage Demo</title>
 
-	<script src="node_modules/http2-cache/index.js"></script>
+
+    <script src="https://origin-server.example.com:8080/node_modules/http2-cache/index.js"></script>
 	<script type="text/javascript">
-	
-    	XMLHttpRequest.proxy([location.origin + "/proxy.json"]);
-	</script>
+    	XMLHttpRequest.proxy([{
+	        "push": "https://rest-accelerator.example.com:8081/event-stream",
+	        "transport": "wss://rest-accelerator.example.com:8081/",
+	        //"clientLogLevel": "debug",
+	        "proxy": [
+	            // Add demos service endpoint here
+	            "https://origin-server.example.com:8085/api/",
+                // Un-comment to load all resources via accelerator
+	            //"https://origin-server.example.com:8085/"
+	        ]
+	    }]);
+    </script>
 
     <link rel="stylesheet" href="assets/style/style.css" />
 
