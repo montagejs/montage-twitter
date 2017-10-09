@@ -17,7 +17,7 @@
     "globals": {
         "CustomEvent": true,
         "WebSocket": false,
-
+        "Promise": true,
         "require": false,
         "exports": false,
         "global": false,

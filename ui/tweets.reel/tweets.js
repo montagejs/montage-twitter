@@ -71,7 +71,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     
     initServices: {
         value: function () {
-            this.mainService = mainService = new DataService();
+            this.mainService = new DataService();
             var twitterService = new TwitterService();
             this.mainService.addChildService(twitterService);
             return Promise.resolve();
@@ -114,7 +114,6 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             return self.mainService.fetchData(dataQuery).then(function (tweets) {
                 self.tweets = tweets;
             }).catch(function (error) {
-                debugger;
                 self.error = error;
             }).finally(function () {
                 self.isLoading = false;
