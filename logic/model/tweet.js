@@ -6,7 +6,7 @@ var Montage = require("montage").Montage,
  * @extends Montage
  */
 
-exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
+exports.Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     temp: {
         value: null
     },
@@ -21,8 +21,7 @@ exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     TYPE: {
         //get: DataObjectDescriptor.getterFor(exports, "Tweet"),
         get: function () {
-            Tweet.objectPrototype = Tweet;
-            return Tweet;
+            return (exports.Tweet.objectPrototype = exports.Tweet);
         }
     }
 });

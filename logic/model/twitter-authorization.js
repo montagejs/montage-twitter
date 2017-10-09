@@ -5,7 +5,7 @@ var Montage = require("montage").Montage;
  * @extends Montage
  */
 
-exports.TwitterAuthorization = TwitterAuthorization = Montage.specialize(/** @lends TwitterAuthorization.prototype */ {
+exports.TwitterAuthorization = Montage.specialize(/** @lends TwitterAuthorization.prototype */ {
 
     profile: {
         value: undefined
@@ -22,5 +22,4 @@ exports.TwitterAuthorization = TwitterAuthorization = Montage.specialize(/** @le
     token: {
         value: undefined
     }
-
 });
