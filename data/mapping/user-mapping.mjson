@@ -15,11 +15,11 @@
                         "converter": {"@": "roleForeignKeyConverter"}
                     },
                     "timelineTweets": {
-                        "<-": "{object: 'statuses', action: 'home_timeline'}",
+                        "<-": "{type: 'statuses', action: 'home_timeline'}",
                         "converter": {"@": "timelineTweetsForeignKeyConverter"}
                     },
                     "tweets": {
-                        "<-": "{object: 'statuses', action: 'user_timeline', username: username}",
+                        "<-": "{type: 'statuses', action: 'user_timeline', username: username}",
                         "converter": {"@": "tweetsForeignKeyConverter"}
                     }
                 }

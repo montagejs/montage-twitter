@@ -2,6 +2,10 @@ var HttpService = require("montage/data/service/http-service").HttpService,
     DataService = require("montage/data/service/data-service").DataService,
     Tweet = require('logic/model/tweet').Tweet;
 
+var Connection = require("logic/service/twitter-service-connection.json");
+    // Replace the above with the following to load mock data
+// var  Connection = require("logic/service/twitter-service-connection.mock.json");
+
 /**
  * Provides data for applications.
  *
@@ -29,14 +33,6 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
         }
     },
 
-    ENDPOINT: {
-        value: '/api/twitter'
-    },
-
-    USE_JSON: {
-        value: false
-    },
-
     setHeadersForQuery: {
         value: function (headers, query) {
             var authorization = this.authorization;
@@ -54,14 +50,9 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
                 parameters = criteria.parameters,
                 apiUrl;
 
-            if (self.USE_JSON) {
-                apiUrl = 'logic/service/twitter-' + parameters.object + "-" + parameters.action + '.json';
-            } else {
-
-                apiUrl = self.ENDPOINT + "/" + parameters.object + "/" + parameters.action + "?";
-                if (parameters.userName) {
-                    apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
-                }
+            apiUrl = Connection.url + "/" + parameters.type + "/" + parameters.action + "?";
+            if (parameters.userName) {
+                apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
             }
 
             return self.fetchHttpRawData(apiUrl).then(function (data) {
@@ -82,11 +73,6 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
                 name: rawData.user.name
             };
         }
-    },
+    }
 
-    // types: {
-    //     get: function () {
-    //         return [Tweet.objectDescriptor];
-    //     }
-    // }
 });
