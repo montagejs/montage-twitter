@@ -60,39 +60,22 @@
         "properties": {
             "name": "role",
             "cardinality": 1,
-            "valueDescriptor": {"@": "role_reference"}
+            "valueDescriptor": {"@": "role_descriptor"}
         }
     },
 
-    "role_reference": {
-        "prototype": "montage/core/meta/object-descriptor-reference",
-        "properties": {
-            "valueReference": {
-                "objectDescriptorName": "Role",
-                "prototypeName": "Role",
-                "objectDescriptorModule": {"%": "data/model/role.mjson"}
-            }
-        }
+    "role_descriptor": {
+        "object": "data/model/role.mjson"
     },
 
-    "tweet_reference": {
-        "prototype": "montage/core/meta/object-descriptor-reference",
-        "properties": {
-            "valueReference": {
-                "objectDescriptorName": "Tweet",
-                "prototypeName": "Tweet",
-                "objectDescriptorModule": {"%": "data/model/tweet.mjson"}
-            }
-        }
-    },
+    
 
     "tweets": {
         "prototype": "montage/core/meta/property-descriptor",
         "properties": {
             "name": "tweets",
             "cardinality": -1,
-            "valueDescriptor": {"@": "tweet_reference"},
-            "objectDescriptor": {"@": "root"}
+            "valueDescriptor": {"@": "tweet_descriptor"}
         }
     },
 
@@ -101,8 +84,11 @@
         "properties": {
             "name": "timelineTweets",
             "cardinality": -1,
-            "valueDescriptor": {"@": "tweet_reference"},
-            "objectDescriptor": {"@": "root"}
+            "valueDescriptor": {"@": "tweet_descriptor"}
         }
+    },
+
+    "tweet_descriptor": {
+        "object": "data/model/tweet.mjson"
     }
 }
