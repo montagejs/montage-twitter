@@ -85,14 +85,18 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     }, pollingInterval);
                 }
             }).then(function (popupWindowLocation) {
-                var token = self._getHashParam(popupWindowLocation, 'result'),
-                    error = self._getHashParam(popupWindowLocation, 'error');
+                return new Promise(function (resolve, reject) {
+                    var token = self._getHashParam(popupWindowLocation, 'result'),
+                        error = self._getHashParam(popupWindowLocation, 'error');
 
-                if (error) {
-                    return Promise.reject(error);
-                } else {
-                   return Promise.resolve(token);
-                }
+                    if (error) {
+                        return reject(error);
+                    } else if (!token) {  
+                        return reject("No token");
+                    } else {
+                       return resolve(token);
+                    }
+                })
             });
         }
     },
@@ -160,9 +164,8 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     _getHashParam: {
         value: function (url, name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-
-            var regex = new RegExp('[#&]' + name + '=([^;]*)'),
-                results = regex.exec(url.hash);
+            var regex = new RegExp('[#&?]' + name + '=([^;]*)'),
+                results = regex.exec(url.search || url.hash);
 
             return results === null ? '' : JSON.parse(decodeURIComponent(results[1].replace(/\+/g, ' ')));
         }
@@ -184,8 +187,13 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     _setCredentials: {
         value: function (credentials) {
             return new Promise(function (resolve, reject) {
-                localStorage.setItem('twitter-credentials', JSON.stringify(credentials));
-                resolve(credentials);
+
+                if (!credentials) {
+                    reject(new Error('No credentials'));
+                } else {                 
+                    localStorage.setItem('twitter-credentials', JSON.stringify(credentials));
+                    resolve(credentials);   
+                }
             });
         }
     },
@@ -199,7 +207,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                         return self._setCredentials(credentials);
                     }).finally(function () {
                         if (typeof popup.close === 'function') {
-                            popup.close();
+                            //popup.close();
                         }
                     });
                 });
