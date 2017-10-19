@@ -96,7 +96,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     } else {
                        return resolve(token);
                     }
-                })
+                });
             });
         }
     },
@@ -207,7 +207,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                         return self._setCredentials(credentials);
                     }).finally(function () {
                         if (typeof popup.close === 'function') {
-                            //popup.close();
+                            popup.close();
                         }
                     });
                 });
