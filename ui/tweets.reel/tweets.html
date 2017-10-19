@@ -8,18 +8,14 @@
         {
             "owner": {
                 "values": {
-                    "element": {"#": "owner"}
-                },
-                "bindings": {
+                    "element": {"#": "owner"},
                     "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" } 
                 }
             },
             "tweets": {
                 "prototype": "montage/ui/repetition.reel",
                 "values": {
-                    "element": { "#": "tweets" }
-                },
-                "bindings": {
+                    "element": { "#": "tweets" },
                     "content": { "<-": "!@owner.user.defined() ? [] : @owner.selectedTab == 'timeline' ? @owner.user.timelineTweets : @owner.selectedTab == 'profile' ? @owner.user.tweets : []" }
                 }
             },
@@ -28,9 +24,7 @@
                 "values": {
                     "acceptsActiveTarget": true,
                     "board": { "@": "owner" },
-                    "element": { "#": "tweet" }
-                },
-                "bindings": {
+                    "element": { "#": "tweet" },
                     "value": { "<-": "@tweets:iteration.object" }
                 }
             },

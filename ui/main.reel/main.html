@@ -17,9 +17,7 @@
                 "prototype": "montage/ui/substitution.reel",
                 "values": {
                     "element": {"#": "substitution"},
-                    "shouldLoadComponentTree": true
-                },
-                "bindings": {
+                    "shouldLoadComponentTree": true,
                     "switchValue": {"<-": "@owner.isAuthenticated ? 'content' : 'login'"}
                 }
             },
@@ -32,9 +30,7 @@
             "tweets": {
                 "prototype": "ui/tweets.reel",
                 "values": {
-                    "element": {"#": "tweets"}
-                },
-                "bindings": {
+                    "element": {"#": "tweets"},
                     "content": {"<-": "@owner.tweets"},
                     "user": {"<-": "@owner.user"}
                 }
