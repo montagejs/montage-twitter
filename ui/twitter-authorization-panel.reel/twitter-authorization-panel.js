@@ -109,9 +109,9 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                  popupWindow = window.open(url, popupName, popupOptions);
 
                  if (popupWindow) {
-                    resolve(popupWindow)
+                    resolve(popupWindow);
                  } else {
-                    reject(new Error('Unable to open popup'))
+                    reject(new Error('Unable to open popup'));
                  }
             });
         }
@@ -173,7 +173,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
             return new Promise(function (resolve, reject) {
                 var credentials = localStorage.getItem('twitter-credentials', credentials);
                 if (credentials) {
-                    resolve(JSON.parse(credentials))
+                    resolve(JSON.parse(credentials));
                 } else {
                     reject(new Error('No credentials'));
                 }
@@ -202,7 +202,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                             popup.close();
                         }
                     });
-                })
+                });
             }).then(function (credentials) {
                  return self.service.authorize(credentials);
             }).then(function (authorization) {
@@ -210,7 +210,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
             }).catch(function (error) {
                 console.error(error);
                 self.authorizationManagerPanel.cancelAuthorization();
-            })
+            });
         }
     },
 

@@ -1,9 +1,8 @@
+/* global __dirname, process, Promise */
 
-var http = require("http");             
 var https = require('https');
 var express = require('express');
 var session = require('express-session');
-var path = require('path');
 var fs = require('fs');
 var Twitter = require('twitter');
 var TwitterStrategy = require('passport-twitter');
@@ -14,40 +13,29 @@ var passport = require('passport');
 var https = require('spdy');
 */
 
-// Path
-
-var ROOT_PATH = __dirname;
-var PUBLIC_PATH = process.env.PUBLIC_PATH || ROOT_PATH + '/public/';
-
-function readFile(path) {
-	return new Promise(function (resolve, reject) {
-		fs.readFile(path, function (err, file) {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(file);
-			}
-		});
-	});
-}
-
-// Set default env
-const TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD";
-const TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi";
-
-const APP_SSL = process.env.APP_SSL || true;
-const APP_PORT = process.env.APP_PORT || 8080;
-const APP_HOST = process.env.APP_HOST || 'localhost';
-const APP_URL = process.env.APP_URL || (APP_SSL ? 'https' : 'http') + '://' + APP_HOST + ':' + APP_PORT;
-
-
 //
 // Configure app
 //
 
 var app = express();
 
+// Path
+app.set('ROOT_PATH', __dirname);
+app.set('PUBLIC_PATH', process.env.PUBLIC_PATH || app.get('ROOT_PATH') + '/public/');
+
+// App
+app.set('APP_SSL', process.env.APP_SSL || true);
+app.set('APP_PORT', process.env.APP_PORT || 8080);
+app.set('APP_HOST', process.env.APP_HOST || 'localhost');
+app.set('APP_URL', process.env.APP_URL || (app.get('APP_SSL') ? 'https' : 'http') + '://' + app.get('APP_HOST') + ':' + app.get('APP_PORT'));
+
+// Set default env
+app.set('TWITTER_CONSUMER_KEY', process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD");
+app.set('TWITTER_CONSUMER_SECRET', process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi");
+
+
 // Expose statics
+var PUBLIC_PATH = app.get('PUBLIC_PATH');
 app.use(express.static(PUBLIC_PATH, {
   index: false
 }));
@@ -63,6 +51,9 @@ passport.serializeUser(function(user, next) {
 passport.deserializeUser(function(id, next) {
   next(null, id);
 });
+
+var TWITTER_CONSUMER_KEY = app.get('TWITTER_CONSUMER_KEY'),
+    TWITTER_CONSUMER_SECRET = app.get('TWITTER_CONSUMER_SECRET');
 
 app.use(passport.initialize());
   passport.use(new TwitterStrategy({
@@ -91,6 +82,18 @@ app.use(session({
 //
 // Expose routes
 //
+
+function readFile(path) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(path, function (err, file) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(file);
+      }
+    });
+  });
+}
 
 app.get('/', function(req, res) {
     // Render index.html and push montage.js
@@ -179,10 +182,10 @@ app.get('/auth/twitter/result', function (req, res, next) {
 });
 
 // Twitter api proxy
-app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next) {
+app.get('/api/twitter/:twitterObject/:twitterAction', function (req, res, next) {
   
-  var twitterObject = req.params.twitter_object,
-      twitterAction = req.params.twitter_action,
+  var twitterObject = req.params.twitterObject,
+      twitterAction = req.params.twitterAction,
       twitterParams = req.query;
 
   if (0) {
@@ -191,7 +194,7 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
           res.end(file);
       }, function (err) {
         next(err);
-      })
+      });
 
   } else {
 
@@ -210,7 +213,7 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
     // TODO implement http2 push
     // - https://blog.twitter.com/2008/what-does-rate-limit-exceeded-mean-updated
     console.log('Twitter API call', twitterObject, twitterAction, twitterParams);
-    client.get(twitterObject + '/' + twitterAction, twitterParams, function(errors, tweets, response) {
+    client.get(twitterObject + '/' + twitterAction, twitterParams, function(errors, tweets /*,response*/) {
       if (errors) {
           next(errors[0]);
       } else {
@@ -225,11 +228,17 @@ app.use(function (err, req, res, next) {
   console.error(err);
   res.status(500);
   res.end(err.message);  
-})
+});
 
 //
 // Start http server
 //
+
+
+var APP_PORT = app.get('APP_PORT'),  
+    APP_URL = app.get('APP_URL'),  
+    APP_SSL = app.get('APP_SSL'),
+    CERT_PATH = app.get('ROOT_PATH') + '/certs/';
 
 if (APP_PORT === 443) {
   var forwardingServer = express();
@@ -245,8 +254,8 @@ if (APP_SSL === true) {
 
   https
     .createServer({
-        key: fs.readFileSync(ROOT_PATH + '/certs/private.key'),
-        cert:  fs.readFileSync(ROOT_PATH + '/certs/public.crt')
+        key: fs.readFileSync(CERT_PATH + '/private.key'),
+        cert:  fs.readFileSync(CERT_PATH + '/public.crt')
     }, app)
     .listen(APP_PORT, function (error) {
       if (error) {
@@ -259,4 +268,4 @@ if (APP_SSL === true) {
 } else {
   app.listen(APP_PORT);
   console.log('(http) Listening on port: ' + APP_PORT + '.');
-}
+} 

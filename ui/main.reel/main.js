@@ -75,7 +75,7 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value: function(authorizationManager, authorizationPanel, authorizationService) {
 
         	// We put it in a slot
-            this.auth.content = this.authorizationPanel = new authorizationPanel;
+            this.auth.content = this.authorizationPanel = new authorizationPanel();
             this.isAuthenticationLoading = true;
             return this.authorizationPanel;
         }

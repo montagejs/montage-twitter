@@ -5,7 +5,7 @@ var Montage = require("montage").Montage;
  * @extends Montage
  */
 
-exports.Tweet = Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
+exports.Tweet = Montage.specialize(/** @lends Tweet.prototype */ {
     temp: {
         value: null
     }

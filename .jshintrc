@@ -1,6 +1,6 @@
 {
     "bitwise": true,
-    "camelcase": true,
+    "camelcase": false,
     "curly": true,
     "eqeqeq": true,
     "forin": true,
@@ -8,7 +8,7 @@
     "noempty": true,
     "nonew": true,
     "undef": true,
-    "unused": true,
+    "unused": false,
     "trailing": true,
     "indent": 4,
     "boss": true,
@@ -17,7 +17,7 @@
     "globals": {
         "CustomEvent": true,
         "WebSocket": false,
-
+        "Promise": true,
         "require": false,
         "exports": false,
         "global": false,

@@ -45,7 +45,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
     user: {
         value: undefined
     },
-    
+
     //
     // Handle events
     //
