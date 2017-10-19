@@ -15,23 +15,8 @@
 	<link rel="apple-touch-icon-precomposed" href="assets/icons/apple-touch-icon-precomposed.png">
 	<!-- For Android 3.x+ devices: -->
 	<link rel="icon" sizes="196x196" href="assets/icons/apple-touch-icon.png">
-
-    <title></title>
-
+    <title>Montage Twitter</title>
     <link rel="stylesheet" href="assets/style/style.css" />
-
-	<script src="node_modules/http2-cache/index.js"></script>
-	<script type="text/javascript">
-    	XMLHttpRequest.proxy([{
-		  "pushURL": "https://localhost:8081/event-stream",
-		  "transport": "ws://localhost:8081/",
-		  "clientLogLevel": "debug",
-		  "proxy": [
-		    "https://localhost:3000/api/twitter"
-		  ]
-		}]);
-	</script>
-
 	<script src="node_modules/montage/montage.js" async></script>
     <script type="text/montage-serialization">
     {
