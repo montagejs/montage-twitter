@@ -29,6 +29,7 @@ app.set('APP_PORT', process.env.APP_PORT || 8080);
 app.set('APP_HOST', process.env.APP_HOST || 'localhost');
 app.set('APP_URL', process.env.APP_URL || (app.get('APP_SSL') ? 'https' : 'http') + '://' + app.get('APP_HOST') + ':' + app.get('APP_PORT'));
 
+
 // Set default env
 app.set('TWITTER_CONSUMER_KEY', process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD");
 app.set('TWITTER_CONSUMER_SECRET', process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi");
@@ -52,7 +53,8 @@ passport.deserializeUser(function(id, next) {
   next(null, id);
 });
 
-var TWITTER_CONSUMER_KEY = app.get('TWITTER_CONSUMER_KEY'),
+var APP_URL = app.get('APP_URL'),  
+    TWITTER_CONSUMER_KEY = app.get('TWITTER_CONSUMER_KEY'),
     TWITTER_CONSUMER_SECRET = app.get('TWITTER_CONSUMER_SECRET');
 
 app.use(passport.initialize());
@@ -236,7 +238,6 @@ app.use(function (err, req, res, next) {
 
 
 var APP_PORT = app.get('APP_PORT'),  
-    APP_URL = app.get('APP_URL'),  
     APP_SSL = app.get('APP_SSL'),
     CERT_PATH = app.get('ROOT_PATH') + '/certs/';
 
