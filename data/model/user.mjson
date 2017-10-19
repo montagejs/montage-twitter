@@ -1,7 +1,7 @@
 {
     "root": {
         "prototype": "montage/core/meta/module-object-descriptor",
-        "properties": {
+        "values": {
             "name": "User",
             "propertyDescriptors": [
                 {"@": "avatar"},
@@ -25,7 +25,7 @@
 
     "avatar": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "avatar",
             "valueType": "string"
         }
@@ -33,7 +33,7 @@
 
     "handle": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "handle",
             "valueType": "string"
         }
@@ -41,7 +41,7 @@
 
     "id": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "id",
             "valueType": "string"
         }
@@ -49,7 +49,7 @@
     
     "name": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "name",
             "valueType": "string"
         }
@@ -57,7 +57,7 @@
 
     "role": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "role",
             "cardinality": 1,
             "valueDescriptor": {"@": "role_descriptor"}
@@ -72,7 +72,7 @@
 
     "tweets": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "tweets",
             "cardinality": -1,
             "valueDescriptor": {"@": "tweet_descriptor"}
@@ -81,7 +81,7 @@
 
     "timelineTweets": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "timelineTweets",
             "cardinality": -1,
             "valueDescriptor": {"@": "tweet_descriptor"}

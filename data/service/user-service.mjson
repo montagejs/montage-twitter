@@ -1,7 +1,7 @@
 {
     "root": {
         "prototype": "logic/service/user-service",
-        "properties": {
+        "values": {
             "name": "UserService",
             "exportName": "UserService",
             "mappings": [

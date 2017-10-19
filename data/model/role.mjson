@@ -1,7 +1,7 @@
 {
     "root": {
         "prototype": "montage/core/meta/module-object-descriptor",
-        "properties": {
+        "values": {
             "name": "Role",
             "propertyDescriptors": [
                 {"@": "id"}
@@ -18,7 +18,7 @@
 
     "id": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "id",
             "valueType": "string"
         }

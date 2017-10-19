@@ -1,7 +1,7 @@
 {
     "root": {
         "prototype": "montage/core/meta/module-object-descriptor",
-        "properties": {
+        "values": {
             "name": "Tweet",
             "propertyDescriptors": [
                 {"@": "creationDate"},
@@ -20,7 +20,7 @@
 
     "creationDate": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "creationDate",
             "valueType": "date"
         }
@@ -28,7 +28,7 @@
 
     "id": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "id",
             "valueType": "string"
         }
@@ -36,7 +36,7 @@
 
     "text": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "text",
             "valueType": "string"
         }
@@ -44,7 +44,7 @@
 
     "user": {
         "prototype": "montage/core/meta/property-descriptor",
-        "properties": {
+        "values": {
             "name": "user",
             "valueType": "string",
             "_comment": "Tweets carry a robust user object. This can be fleshed out much more"

@@ -61,7 +61,7 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
             var tweetProperty = this.selectedTab === 'timeline' ? "timelineTweets" :
             this.selectedTab === 'profile' ? "tweets" : null;
             if (tweetProperty) {
-                this.application.service.updateObjectProperties(this.user, tweetProperty);
+                this.application.service.updateObjectProperties(this.user, 'tweetProperty');
             }
         }
     },
