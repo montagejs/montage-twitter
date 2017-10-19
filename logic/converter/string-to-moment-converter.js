@@ -35,7 +35,7 @@ convert: {
     value: function (v) {
         var result = null;
         if (v !== undefined) {
-            result = this.pattern && moment(v, this.pattern) || moment(parseInt(v))
+            result = this.pattern && moment(v, this.pattern) || moment(parseInt(v, 10));
         }
         return result;
     }

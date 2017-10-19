@@ -58,8 +58,8 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
 
     refreshTweets: {
         value: function () {
-            var tweetProperty = this.selectedTab == 'timeline' ? "timelineTweets" :
-            this.selectedTab == 'profile' ? "tweets" : null;
+            var tweetProperty = this.selectedTab === 'timeline' ? "timelineTweets" :
+            this.selectedTab === 'profile' ? "tweets" : null;
             if (tweetProperty) {
                 this.application.service.updateObjectProperties(this.user, tweetProperty);
             }

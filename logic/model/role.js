@@ -5,7 +5,7 @@ var Montage = require("montage").Montage;
  * @extends Montage
  */
 
-exports.Role = Role = Montage.specialize(/** @lends Role.prototype */ {
+exports.Role = Montage.specialize(/** @lends Role.prototype */ {
 
     id: {
         value: undefined

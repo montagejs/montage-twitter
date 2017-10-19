@@ -5,7 +5,7 @@ var Montage = require("montage").Montage;
  * @extends Montage
  */
 
-exports.User = User = Montage.specialize(/** @lends User.prototype */ {
+exports.User = Montage.specialize(/** @lends User.prototype */ {
 
     avatar: {
         value: undefined
