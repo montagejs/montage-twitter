@@ -7,36 +7,31 @@
     <script type="text/montage-serialization">
         {
             "owner": {
-                "properties": {
-                    "element": {"#": "owner"}
-                },
-                "bindings": {
-                    "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" } 
+                "values": {
+                    "element": {"#": "owner"},
+                    "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" },
+                    "_activeUser": {"<-": "selectedUser || application.user"}
                 }
             },
             "tweets": {
                 "prototype": "montage/ui/repetition.reel",
-                "properties": {
-                    "element": { "#": "tweets" }
-                },
-                "bindings": {
-                    "content": { "<->": "@owner.tweets" }
+                "values": {
+                    "element": { "#": "tweets" },
+                    "content": { "<-": "@owner._activeUser.defined() ? @owner.tweetProperty == 'tweets' ? @owner._activeUser.tweets : @owner._activeUser.timelineTweets : []"}
                 }
             },
             "tweet": {
                 "prototype": "ui/tweet.reel",
-                "properties": {
+                "values": {
                     "acceptsActiveTarget": true,
                     "board": { "@": "owner" },
-                    "element": { "#": "tweet" }
-                },
-                "bindings": {
-                    "value": { "<->": "@tweets:iteration.object" }
+                    "element": { "#": "tweet" },
+                    "value": { "<-": "@tweets:iteration.object" }
                 }
             },
             "refresh": {
                 "prototype": "digit/ui/button.reel",
-                "properties": {
+                "values": {
                     "element": { "#": "refresh" },
                     "identifier": "refresh",
                     "label": "Refresh"
@@ -50,7 +45,7 @@
             },
             "profile": {
                 "prototype": "digit/ui/button.reel",
-                "properties": {
+                "values": {
                     "element": { "#": "profile" },
                     "identifier": "profile",
                     "label": "Profile"
@@ -64,7 +59,7 @@
             },
             "timeline": {
                 "prototype": "digit/ui/button.reel",
-                "properties": {
+                "values": {
                     "element": { "#": "timeline" },
                     "identifier": "timeline",
                     "label": "Timeline"
@@ -78,7 +73,7 @@
             },
             "user": {
                 "prototype": "digit/ui/button.reel",
-                "properties": {
+                "values": {
                     "element": { "#": "user" },
                     "identifier": "user",
                     "label": "@montagejs"

@@ -1,4 +1,4 @@
-var RawDataService = require("montage-data/logic/service/raw-data-service").RawDataService,
+var RawDataService = require("montage/data/service/raw-data-service").RawDataService,
     TwitterAuthorization = require("logic/model/twitter-authorization").TwitterAuthorization;
 
  exports.TwitterAuthorizationService = RawDataService.specialize({
@@ -31,11 +31,12 @@ var RawDataService = require("montage-data/logic/service/raw-data-service").RawD
         value: function (panelResult) {
             var self = this;
             return new Promise(function (resolve, reject) {
-                self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
-
-                // TODO serialize TwitterAuthorization in session
-                console.log(self.authorization);
-                resolve(self.authorization);
+                if (panelResult) {
+                    self.authorization = self._mapRawDataToTwitterAuthorization(panelResult);
+                    resolve(self.authorization);
+                } else {
+                    resolve(null);
+                }
             });
         }
      },

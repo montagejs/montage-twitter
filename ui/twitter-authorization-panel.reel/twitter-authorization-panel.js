@@ -1,4 +1,4 @@
-var AuthorizationPanel = require("montage-data/ui/authorization-panel.reel").AuthorizationPanel,
+var AuthorizationPanel = require("montage/ui/authorization-panel.reel").AuthorizationPanel,
     Promise = require('montage/core/promise').Promise;
 
 
@@ -85,14 +85,18 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     }, pollingInterval);
                 }
             }).then(function (popupWindowLocation) {
-                var token = self._getHashParam(popupWindowLocation, 'result'),
-                    error = self._getHashParam(popupWindowLocation, 'error');
-    
-                if (error) {
-                    return Promise.reject(error);
-                } else {
-                   return Promise.resolve(token);
-                }
+                return new Promise(function (resolve, reject) {
+                    var token = self._getHashParam(popupWindowLocation, 'result'),
+                        error = self._getHashParam(popupWindowLocation, 'error');
+
+                    if (error) {
+                        return reject(error);
+                    } else if (!token) {  
+                        return reject("No token");
+                    } else {
+                       return resolve(token);
+                    }
+                });
             });
         }
     },
@@ -101,7 +105,7 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
         value: function (url, options) {
             var self = this;
             return new Promise(function (resolve, reject) {
-                
+
                 var popupWindow,
                     popupOptions = self._stringifyOptions(self._prepareOptions(options)),
                     popupName = 'authorization-panel';
@@ -128,13 +132,13 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
                     height: height,
                     left: parseInt(window.screenX + ((window.outerWidth - width) / 2)),
                     top: parseInt(window.screenY + ((window.outerHeight - height) / 2.5)),
-                    toolbar: "no", 
-                    location: "no", 
-                    directories: "no", 
-                    status: "no", 
-                    menubar: "no",  
-                    scrollbars: "yes", 
-                    resizable: "no", 
+                    toolbar: "no",
+                    location: "no",
+                    directories: "no",
+                    status: "no",
+                    menubar: "no",
+                    scrollbars: "yes",
+                    resizable: "no",
                     copyhistory: "no"
                 };
 
@@ -160,9 +164,8 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     _getHashParam: {
         value: function (url, name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-
-            var regex = new RegExp('[#&]' + name + '=([^;]*)'),
-                results = regex.exec(url.hash);
+            var regex = new RegExp('[#&?]' + name + '=([^;]*)'),
+                results = regex.exec(url.search || url.hash);
 
             return results === null ? '' : JSON.parse(decodeURIComponent(results[1].replace(/\+/g, ' ')));
         }
@@ -184,8 +187,13 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     _setCredentials: {
         value: function (credentials) {
             return new Promise(function (resolve, reject) {
-                localStorage.setItem('twitter-credentials', JSON.stringify(credentials));
-                resolve(credentials);
+
+                if (!credentials) {
+                    reject(new Error('No credentials'));
+                } else {                 
+                    localStorage.setItem('twitter-credentials', JSON.stringify(credentials));
+                    resolve(credentials);   
+                }
             });
         }
     },

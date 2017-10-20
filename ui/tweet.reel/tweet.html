@@ -6,25 +6,21 @@
     <script type="text/montage-serialization">
     {
         "owner": {
-            "properties": {
+            "values": {
                 "element": {"#": "owner"}
             }
         },
         "tweetText": {
             "prototype": "montage/ui/text.reel",
-            "properties": {
-                "element": {"#": "tweetText"}
-            },
-            "bindings": {
+            "values": {
+                "element": {"#": "tweetText"},
                 "value": {"<-": "@owner.value.text"}
             }
         },
         "tweetUser": {
             "prototype": "montage/ui/text.reel",
-            "properties": {
-                "element": {"#": "tweetUser"}
-            },
-            "bindings": {
+            "values": {
+                "element": {"#": "tweetUser"},
                 "value": {"<-": "@owner.value.user.name"}
             }
         }

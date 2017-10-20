@@ -23,7 +23,16 @@ npm start
 Then Open you browser to "https://localhost:8080".
 
 # TODO
-- Add authentication persistance
 - Add polling auto-updates
-- Add push auto-updates
-- Add param to swtich from push to poll updates
+
+# To run without docker
+
+```
+# Install twitter-service
+cd docker/twitter-service 
+npm install
+cd ../../
+
+# Run and serve montage-twitter
+PUBLIC_PATH=. APP_PORT=8080 node docker/twitter-service/index.js 
+```

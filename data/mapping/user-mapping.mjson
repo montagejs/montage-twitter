@@ -1,0 +1,68 @@
+{
+    "root": {
+        "prototype": "montage/data/service/expression-data-mapping",
+        "values": {
+            "objectDescriptor": {"@": "UserDescriptorReference"},
+            "rawDataPrimaryKeys":["username"],
+            "objectMapping": {
+                "rules": {
+                    "avatar": {"<->": "photos.get(0)"},
+                    "handle": {"<->": "username"},
+                    "id": {"<->": "id"},
+                    "name": {"<->": "displayName"},
+                    "role": {
+                        "<-": "{accessLevel: _accessLevel}",
+                        "converter": {"@": "roleForeignKeyConverter"}
+                    },
+                    "timelineTweets": {
+                        "<-": "{type: 'statuses', action: 'home_timeline'}",
+                        "converter": {"@": "timelineTweetsForeignKeyConverter"}
+                    },
+                    "tweets": {
+                        "<-": "{type: 'statuses', action: 'user_timeline', username: username}",
+                        "converter": {"@": "tweetsForeignKeyConverter"}
+                    }
+                }
+            },
+            "rawDataMapping": {
+                "rules": {
+                }
+            },
+            "requisitePropertyNames": [
+                "avatar", "handle", "id", "name", "role"
+            ]
+        }
+    },
+    
+    "UserDescriptorReference": {
+        "prototype": "montage/core/meta/object-descriptor-reference",
+        "values": {
+            "valueReference": {
+                "objectDescriptor": "User",
+                "prototypeName": "User",
+                "objectDescriptorModule": {"%": "data/model/user.mjson"}
+            }
+        }
+    },
+
+    "roleForeignKeyConverter": {
+        "prototype": "montage/data/converter/raw-property-value-to-object-converter",
+        "values": {
+            "convertExpression": "accessLevel == $.accessLevel"
+        }
+    },
+
+    "timelineTweetsForeignKeyConverter": {
+        "prototype": "montage/data/converter/raw-property-value-to-object-converter",
+        "values": {
+            "convertExpression": "object == $.object && action == $.action"
+        }
+    },
+
+    "tweetsForeignKeyConverter": {
+        "prototype": "montage/data/converter/raw-property-value-to-object-converter",
+        "values": {
+            "convertExpression": "object == $.object && action == $.action && username == $.username"
+        }
+    }
+}

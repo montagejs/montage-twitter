@@ -7,8 +7,8 @@
   "private": true,
   "dependencies": {
     "digit": "^3.0.0",
-    "montage": "^17.0.11",
-    "montage-data": "git://github.com/montagestudio/montage-data.git#tej/authorization-service"
+    "montage": "git://github.com/montagejs/montage.git#features/data",
+    "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop"
   },
   "scripts": {
     "lint": "jshint .",

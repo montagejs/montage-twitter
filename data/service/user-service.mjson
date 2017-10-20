@@ -1,0 +1,28 @@
+{
+    "root": {
+        "prototype": "logic/service/user-service",
+        "values": {
+            "name": "UserService",
+            "exportName": "UserService",
+            "mappings": [
+                {"@": "userMapping"}
+            ],
+            "types": [
+                {"@": "role"},
+                {"@": "user"}
+            ]
+        }
+    },
+
+    "role": {
+        "object": "data/model/role.mjson"
+    },
+
+    "user": {
+        "object": "data/model/user.mjson"
+    },
+
+    "userMapping": {
+        "object": "data/mapping/user-mapping.mjson"
+    }
+}
