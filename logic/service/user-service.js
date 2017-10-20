@@ -34,9 +34,12 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
     fetchRawData: {
         value: function (stream) {
             var self = this,
-                parameters = stream.query.criteria.parameters;
+                parameters = stream.query.criteria.parameters,
+                username = parameters && parameters.username;
 
-            if (stream.query.type === User) {
+            if (username) {
+                this._fetchUserWithName(stream, username);
+            } else if (stream.query.type === User) {
                 this._fetchUser(stream);
             } else {
                 this._fetchRole(stream);
@@ -56,6 +59,17 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
     _fetchUser: {
         value: function (stream) {
             var rawUser = this.authorization && this.authorization[0].profile;
+            this.addRawData(stream, [rawUser]);
+            this.rawDataDone(stream);
+        }
+    },
+
+    _fetchUserWithName: {
+        value: function (stream, username) {
+            var rawUser = {
+                username: username,
+                displayName: username
+            };
             this.addRawData(stream, [rawUser]);
             this.rawDataDone(stream);
         }

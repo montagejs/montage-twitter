@@ -9,14 +9,15 @@
             "owner": {
                 "values": {
                     "element": {"#": "owner"},
-                    "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" } 
+                    "classList.has('Tweets-loading')": { "<-": "@owner.isLoading" },
+                    "_activeUser": {"<-": "selectedUser || application.user"}
                 }
             },
             "tweets": {
                 "prototype": "montage/ui/repetition.reel",
                 "values": {
                     "element": { "#": "tweets" },
-                    "content": { "<-": "!@owner.user.defined() ? [] : @owner.selectedTab == 'timeline' ? @owner.user.timelineTweets : @owner.selectedTab == 'profile' ? @owner.user.tweets : []" }
+                    "content": { "<-": "@owner._activeUser.defined() ? @owner.tweetProperty == 'tweets' ? @owner._activeUser.tweets : @owner._activeUser.timelineTweets : []"}
                 }
             },
             "tweet": {

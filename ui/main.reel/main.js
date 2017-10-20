@@ -22,8 +22,6 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         }
     },
 
-    
-
     _initializeServices: {
         value: function () {
             var self = this;
@@ -42,7 +40,7 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value: function () {
             var self = this;
             return this.application.service.fetchData(User).then(function (users) {
-                self.user = users[0];
+                self.application.user = users[0];
                 return null;
             });
         }

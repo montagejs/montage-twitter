@@ -51,10 +51,9 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
                 apiUrl;
 
             apiUrl = Connection.url + "/" + parameters.type + "/" + parameters.action + "?";
-            if (parameters.userName) {
-                apiUrl += 'screen_name=' + encodeURIComponent(parameters.userName);
+            if (parameters.username) {
+                apiUrl += 'screen_name=' + encodeURIComponent(parameters.username);
             }
-
             return self.fetchHttpRawData(apiUrl).then(function (data) {
                 if (data) {
                     self.addRawData(stream, data);

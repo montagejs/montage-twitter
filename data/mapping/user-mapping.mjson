@@ -3,7 +3,7 @@
         "prototype": "montage/data/service/expression-data-mapping",
         "values": {
             "objectDescriptor": {"@": "UserDescriptorReference"},
-            "rawDataPrimaryKeys":["name"],
+            "rawDataPrimaryKeys":["username"],
             "objectMapping": {
                 "rules": {
                     "avatar": {"<->": "photos.get(0)"},

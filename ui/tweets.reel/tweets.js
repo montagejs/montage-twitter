@@ -2,7 +2,8 @@ var Component = require("montage/ui/component").Component,
     Criteria = require("montage/core/criteria").Criteria,
     DataQuery = require("montage/data/model/data-query").DataQuery,
     Deserializer = require("montage/core/serialization/deserializer/montage-deserializer").MontageDeserializer,
-    Tweet = require("logic/model/tweet").Tweet;
+    Tweet = require("logic/model/tweet").Tweet,
+    User = require("logic/model/user").User;
 
 /**
  * @class Tweet
@@ -26,24 +27,28 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
         value: null
     },
 
-    tweets: {
-        value: null
-    },
-
     error: {
         value: null
     },
 
-    selectedTab: {
-        value: 'timeline'
+    _activeUser: {
+        value: undefined
     },
 
     selectedUser: {
-        value: null,
+        value: undefined
     },
 
-    user: {
-        value: undefined
+    tweetProperty: {
+        get: function () {
+            if (!this._tweetProperty) {
+                this._tweetProperty = "tweets";
+            }
+            return this._tweetProperty;
+        },
+        set: function (value) {
+            this._tweetProperty = value;
+        }
     },
 
     //
@@ -58,34 +63,40 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
 
     refreshTweets: {
         value: function () {
-            var tweetProperty = this.selectedTab === 'timeline' ? "timelineTweets" :
-            this.selectedTab === 'profile' ? "tweets" : null;
-            if (tweetProperty) {
-                this.application.service.updateObjectProperties(this.user, 'tweetProperty');
-            }
+          return this.application.service.updateObjectProperties(this._activeUser, this.tweetProperty);
         }
     },
 
 
     handleTimelineAction: {
         value: function(event) {
-            this.selectedTab = 'timeline';
+            this.tweetProperty = 'timelineTweets';
             this.selectedUser = null;
-            // this.loadTimelineTweets();
         }
     },
+
     handleProfileAction: {
         value: function(event) {
-            this.selectedTab = 'profile';
+            this.tweetProperty = 'tweets';
             this.selectedUser = null;
-            // this.loadProfileTweets();
         }
     },
+
     handleUserAction: {
         value: function(event) {
-            this.selectedTab = 'user';
-            // this.selectedUser = 'montagejs';
-            // this.loadUserTweets();
+            var self = this,
+                criteria = new Criteria().initWithExpression("username == $.username", {
+                    username: "montagejs"
+                }),
+                query = DataQuery.withTypeAndCriteria(User, criteria);
+            this.isLoading = true;
+            this.application.service.fetchData(query).then(function (users) {
+                self.selectedUser = users[0];
+                return self.refreshTweets();
+            }).then(function () {
+                self._activeUser
+                self.isLoading = false;
+            });
         }
     }
 });
