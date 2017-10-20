@@ -94,7 +94,6 @@ exports.Tweets = Component.specialize(/** @lends Tweet# */ {
                 self.selectedUser = users[0];
                 return self.refreshTweets();
             }).then(function () {
-                self._activeUser
                 self.isLoading = false;
             });
         }
