@@ -186,17 +186,9 @@ app.get('/auth/twitter/result', function (req, res, next) {
 });
 
 // Twitter api proxy
-<<<<<<< HEAD
-app.get('/api/twitter/:twitterObject/:twitterAction', function (req, res, next) {
-  
-  var twitterObject = req.params.twitterObject,
-      twitterAction = req.params.twitterAction,
-=======
 app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next) {
-
   var twitterObject = req.params.twitter_object,
       twitterAction = req.params.twitter_action,
->>>>>>> Fix paths
       twitterParams = req.query;
 
   if (0) {
@@ -238,13 +230,8 @@ app.get('/api/twitter/:twitter_object/:twitter_action', function (req, res, next
 app.use(function (err, req, res, next) {
   console.error(err);
   res.status(500);
-<<<<<<< HEAD
   res.end(err.message);  
 });
-=======
-  res.end(err.message);
-})
->>>>>>> Fix paths
 
 //
 // Start http server
@@ -283,8 +270,4 @@ if (APP_SSL === true) {
 } else {
   app.listen(APP_PORT);
   console.log('(http) Listening on port: ' + APP_PORT + '.');
-<<<<<<< HEAD
 } 
-=======
-}
->>>>>>> Fix paths
