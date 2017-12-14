@@ -28,7 +28,7 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
     },
 
     authorizationManagerWillAuthorizeWithService: {
-        value:function( authorizationManager, authorizationService) {
+        value: function (authorizationManager, authorizationService) {
             authorizationService.connectionDescriptor = this.authorizationDescriptor;
         }
     },
@@ -36,6 +36,7 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
     setHeadersForQuery: {
         value: function (headers, query) {
             var authorization = this.authorization;
+
             if (authorization && authorization.length) {
                 headers['authorization-token'] = authorization[0].token;
                 headers['authorization-secret'] = authorization[0].secret;
@@ -48,12 +49,12 @@ exports.Twitter = exports.TwitterService = HttpService.specialize(/** @lends Twi
             var self = this,
                 criteria = stream.query.criteria,
                 parameters = criteria.parameters,
-                apiUrl;
+                apiUrl = Connection.url + "/" + parameters.type + "/" + parameters.action + "?";
 
-            apiUrl = Connection.url + "/" + parameters.type + "/" + parameters.action + "?";
             if (parameters.username) {
                 apiUrl += 'screen_name=' + encodeURIComponent(parameters.username);
             }
+
             return self.fetchHttpRawData(apiUrl).then(function (data) {
                 if (data) {
                     self.addRawData(stream, data);

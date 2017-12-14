@@ -25,11 +25,10 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
     },
 
     authorizationManagerWillAuthorizeWithService: {
-        value:function( authorizationManager, authorizationService) {
+        value: function (authorizationManager, authorizationService) {
             authorizationService.connectionDescriptor = this.authorizationDescriptor;
         }
     },
-
 
     fetchRawData: {
         value: function (stream) {
