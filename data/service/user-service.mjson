@@ -5,7 +5,8 @@
             "name": "UserService",
             "exportName": "UserService",
             "mappings": [
-                {"@": "userMapping"}
+                {"@": "userMapping"},
+                {"@": "roleMapping"}
             ],
             "types": [
                 {"@": "role"},
@@ -24,5 +25,9 @@
 
     "userMapping": {
         "object": "data/mapping/user-mapping.mjson"
+    },
+
+    "roleMapping": {
+        "object": "data/mapping/role-mapping.mjson"
     }
 }
