@@ -25,10 +25,8 @@ exports.Main = Component.specialize(/** @lends Main# */ {
     _initializeServices: {
         value: function () {
             var self = this;
-            return require.async("data/montage-data.mjson").then(function (descriptor) {
-                var deserializer = new Deserializer().init(JSON.stringify(descriptor), require);
-                return deserializer.deserializeObject();
-            }).then(function (service) {
+            return require.async("data/montage-data.mjson").then(function (descriptorJSON) {
+                var service = descriptorJSON.montageObject;
                 self.application.service = service;
                 self.isReady = true;
                 return service;
