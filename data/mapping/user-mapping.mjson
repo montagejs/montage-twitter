@@ -2,7 +2,7 @@
     "root": {
         "prototype": "montage/data/service/expression-data-mapping",
         "values": {
-            "objectDescriptor": {"@": "UserDescriptorReference"},
+            "objectDescriptor": {"@": "UserDescriptor"},
             "rawDataPrimaryKeys":["username"],
             "objectMapping": {
                 "rules": {
@@ -33,16 +33,9 @@
             ]
         }
     },
-    
-    "UserDescriptorReference": {
-        "prototype": "montage/core/meta/object-descriptor-reference",
-        "values": {
-            "valueReference": {
-                "objectDescriptor": "User",
-                "prototypeName": "User",
-                "objectDescriptorModule": {"%": "data/model/user.mjson"}
-            }
-        }
+
+    "UserDescriptor": {
+        "object": "data/model/user.mjson"
     },
 
     "roleForeignKeyConverter": {
