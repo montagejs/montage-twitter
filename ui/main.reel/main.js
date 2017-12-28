@@ -1,9 +1,7 @@
 var Component = require("montage/ui/component").Component,
-    Criteria = require("montage/core/criteria").Criteria,
-    DataQuery = require("montage/data/model/data-query").DataQuery,
     DataService = require("montage/data/service/data-service").DataService,
-    Deserializer = require("montage/core/serialization/deserializer/montage-deserializer").MontageDeserializer,
-    User = require("logic/model/user").User;
+    User = require("logic/model/user").User,
+    applicationService = require("data/montage-data.mjson").montageObject;
 
 /**
  * @class Main
@@ -15,24 +13,15 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         value: function Main() {
             this.super();
             DataService.authorizationManager.delegate = this;
-            var self = this;
-            this._initializeServices().then(function () {
-                return self._initializeUser();
-            });
+            this._initializeServices();
+            this._initializeUser();
         }
     },
 
     _initializeServices: {
         value: function () {
-            var self = this;
-            return require.async("data/montage-data.mjson").then(function (descriptor) {
-                var deserializer = new Deserializer().init(JSON.stringify(descriptor), require);
-                return deserializer.deserializeObject();
-            }).then(function (service) {
-                self.application.service = service;
-                self.isReady = true;
-                return service;
-            });
+            this.application.service = applicationService;
+            this.isReady = true;
         }
     },
 

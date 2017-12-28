@@ -1,0 +1,25 @@
+{
+    "root": {
+        "prototype": "montage/data/service/expression-data-mapping",
+        "values": {
+            "objectDescriptor": {"@": "RoleDescriptor"},
+            "rawDataPrimaryKeys":["id"],
+            "objectMapping": {
+                "rules": {
+                    "id": {"<->": "id"}
+                }
+            },
+            "rawDataMapping": {
+                "rules": {
+                }
+            },
+            "requisitePropertyNames": [
+                "id"
+            ]
+        }
+    },
+
+    "RoleDescriptor": {
+        "object": "data/model/role.mjson"
+    }
+}

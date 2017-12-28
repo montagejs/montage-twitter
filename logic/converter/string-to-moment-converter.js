@@ -1,5 +1,5 @@
 var Converter = require("montage/core/converter/converter").Converter,
-    moment = require("montage/moment-timezone");
+    moment = require("moment-timezone");
 
 /**
 * @class StringToMomentConverter

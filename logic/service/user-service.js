@@ -1,7 +1,8 @@
 var HttpService = require("montage/data/service/http-service").HttpService,
     DataService = require("montage/data/service/data-service").DataService,
     Role = require("logic/model/role").Role,
-    User = require("logic/model/user").User;
+    User = require("logic/model/user").User,
+    UserObjectDescriptor = require("data/model/user.mjson").montageObject;
 
 /**
  * Provides data for applications.
@@ -25,11 +26,10 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
     },
 
     authorizationManagerWillAuthorizeWithService: {
-        value:function( authorizationManager, authorizationService) {
+        value: function (authorizationManager, authorizationService) {
             authorizationService.connectionDescriptor = this.authorizationDescriptor;
         }
     },
-
 
     fetchRawData: {
         value: function (stream) {
@@ -39,7 +39,7 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
 
             if (username) {
                 this._fetchUserWithName(stream, username);
-            } else if (stream.query.type === User) {
+            } else if (stream.query.type === User || stream.query.type === UserObjectDescriptor) {
                 this._fetchUser(stream);
             } else {
                 this._fetchRole(stream);
