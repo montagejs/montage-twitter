@@ -26,7 +26,7 @@
     },
 
     "StringToMomentConverter": {
-        "prototype": "logic/converter/string-to-moment-converter",
+        "prototype": "core/converter/string-to-moment-converter",
         "values": {
         }
     },
