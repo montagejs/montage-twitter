@@ -8,6 +8,7 @@
   "dependencies": {
     "digit": "^3.0.0",
     "montage": "git://github.com/montagejs/montage.git#features/data",
+    "moment-timezone": "^0.5.11",
     "http2-cache": "git://github.com/kaazing/http2-cache.js.git#develop"
   },
   "scripts": {
