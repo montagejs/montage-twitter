@@ -2,7 +2,7 @@
     "root": {
         "prototype": "montage/data/service/expression-data-mapping",
         "values": {
-            "objectDescriptor": {"@": "TweetDescriptorReference"},
+            "objectDescriptor": {"@": "TweetDescriptor"},
             "rawDataPrimaryKeys":["id"],
             "objectMapping": {
                 "rules": {
@@ -31,15 +31,8 @@
         "values": {
         }
     },
-    
-    "TweetDescriptorReference": {
-        "prototype": "montage/core/meta/object-descriptor-reference",
-        "values": {
-            "valueReference": {
-                "objectDescriptor": "Tweet",
-                "prototypeName": "Tweet",
-                "objectDescriptorModule": {"%": "data/model/tweet.mjson"}
-            }
-        }
+
+    "TweetDescriptor": {
+        "object": "data/model/tweet.mjson"
     }
 }
