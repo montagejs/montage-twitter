@@ -1,6 +1,6 @@
 var HttpService = require("montage/data/service/http-service").HttpService,
     DataService = require("montage/data/service/data-service").DataService,
-    RoleObjectDescriptor = require("data/model/role.mjson").montageObject,
+    RoleObjectDescriptor = require("data/model/role.mjson").montageObject;
     UserObjectDescriptor = require("data/model/user.mjson").montageObject;
 
 /**
@@ -25,10 +25,11 @@ exports.UserService = HttpService.specialize(/** @lends UserService.prototype */
     },
 
     authorizationManagerWillAuthorizeWithService: {
-        value: function (authorizationManager, authorizationService) {
+        value:function( authorizationManager, authorizationService) {
             authorizationService.connectionDescriptor = this.authorizationDescriptor;
         }
     },
+
 
     fetchRawData: {
         value: function (stream) {

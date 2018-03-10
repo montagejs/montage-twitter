@@ -1,0 +1,21 @@
+{
+    "root": {
+        "prototype": "montage/data/service/data-service",
+        "values": {
+            "name": "DataService",
+            "childServices": [
+                {"@": "tweetService"},
+                {"@": "userService"}
+            ]
+        }
+    },
+
+    "tweetService": {
+        "object": "data/service/twitter-service.mjson"
+    },
+
+    "userService": {
+        "object": "data/service/user-service.mjson"
+    }
+}
+

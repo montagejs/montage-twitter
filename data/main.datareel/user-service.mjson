@@ -1,0 +1,33 @@
+{
+    "root": {
+        "prototype": "../service/user-service",
+        "values": {
+            "name": "UserService",
+            "exportName": "UserService",
+            "mappings": [
+                {"@": "userMapping"},
+                {"@": "roleMapping"}
+            ],
+            "types": [
+                {"@": "role"},
+                {"@": "user"}
+            ]
+        }
+    },
+
+    "role": {
+        "object": "../model/role.mjson"
+    },
+
+    "user": {
+        "object": "../model/user.mjson"
+    },
+
+    "userMapping": {
+        "object": "../mapping/user-mapping.mjson"
+    },
+
+    "roleMapping": {
+        "object": "../mapping/role-mapping.mjson"
+    }
+}
