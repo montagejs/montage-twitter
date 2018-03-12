@@ -1,0 +1,94 @@
+{
+    "root": {
+        "prototype": "montage/core/meta/module-object-descriptor",
+        "values": {
+            "name": "User",
+            "propertyDescriptors": [
+                {"@": "avatar"},
+                {"@": "handle"},
+                {"@": "id"},
+                {"@": "name"},
+                {"@": "role"},
+                {"@": "tweets"},
+                {"@": "timelineTweets"}
+            ],
+            "objectDescriptorModule": {
+                "%": "data/model/user.mjson"
+            },
+            "exportName": "User",
+            "module": {
+                "%": "logic/model/user"
+            }
+        }
+    },
+
+
+    "avatar": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "avatar",
+            "valueType": "string"
+        }
+    },
+
+    "handle": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "handle",
+            "valueType": "string"
+        }
+    },
+
+    "id": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "id",
+            "valueType": "string"
+        }
+    },
+    
+    "name": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "name",
+            "valueType": "string"
+        }
+    },
+
+    "role": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "role",
+            "cardinality": 1,
+            "valueDescriptor": {"@": "role_descriptor"}
+        }
+    },
+
+    "role_descriptor": {
+        "object": "data/model/role.mjson"
+    },
+
+    
+
+    "tweets": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "tweets",
+            "cardinality": -1,
+            "valueDescriptor": {"@": "tweet_descriptor"}
+        }
+    },
+
+    "timelineTweets": {
+        "prototype": "montage/core/meta/property-descriptor",
+        "values": {
+            "name": "timelineTweets",
+            "cardinality": -1,
+            "valueDescriptor": {"@": "tweet_descriptor"}
+        }
+    },
+
+    "tweet_descriptor": {
+        "object": "data/model/tweet.mjson"
+    }
+}

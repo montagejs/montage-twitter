@@ -1,0 +1,23 @@
+{
+    "root": {
+        "prototype": "./service/twitter-service",
+        "values": {
+            "name": "TwitterService",
+            "exportName": "TwitterService",
+            "mappings": [
+                {"@": "tweetMapping"}
+            ],
+            "types": [
+                {"@": "tweet"}
+            ]
+        }
+    },
+
+    "tweet": {
+        "object": "../model/tweet.mjson"
+    },
+
+    "tweetMapping": {
+        "object": "../mapping/tweet-mapping.mjson"
+    }
+}

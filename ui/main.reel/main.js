@@ -61,8 +61,7 @@ exports.Main = Component.specialize(/** @lends Main# */ {
     authorizationManagerWillInstantiateAuthorizationPanelForService: {
         value: function(authorizationManager, authorizationPanel, authorizationService) {
 
-        	// We put it in a slot
-            this.auth.content = this.authorizationPanel = new authorizationPanel();
+            this.authorizationPanel = new authorizationPanel();
             this.isAuthenticationLoading = true;
             return this.authorizationPanel;
         }
