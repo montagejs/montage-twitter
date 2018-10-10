@@ -44,8 +44,8 @@ var RawDataService = require("montage/data/service/raw-data-service").RawDataSer
      _mapRawDataToTwitterAuthorization: {
         value: function (rawData) {
             var authorization = new TwitterAuthorization();
-            authorization.profile = rawData.profile;
-            authorization.role = rawData.profile._accessLevel;
+            authorization.profile = rawData.profile || {};
+            authorization.role = authorization.profile._accessLevel || null;
             authorization.secret = rawData.tokenSecret;
             authorization.token = rawData.token;
 

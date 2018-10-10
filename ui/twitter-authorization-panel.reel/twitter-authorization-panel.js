@@ -32,7 +32,6 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
 
     constructor: {
         value: function OauthAuthorizationPanel() {
-            console.log('TwitterAuthorizationPanel');
             this.super();
         }
     },
