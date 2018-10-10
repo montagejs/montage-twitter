@@ -8,13 +8,39 @@ var Component = require("montage/ui/component").Component,
  * @extends Component
  */
 exports.Main = Component.specialize(/** @lends Main# */ {
+    
+    isReady: {
+        value: false
+    },
+
+    // Holds the Authenticate object after a succesfull authrorization
+    isAuthenticated: {
+        value: false
+    },
+
+    user: {
+        value: undefined
+    },
+
+    isAuthenticationLoading: {
+        value: null
+    },
+
+    _authorizationManager: {
+        get: function () {
+            return DataService.authorizationManager;
+        }
+    },
+
+    authorizationPanel: {
+        get: function () {
+            return this._authorizationManager.authorizationManagerPanel;
+        }
+    },
 
     constructor: {
         value: function Main() {
             this.super();
-            DataService.authorizationManager.delegate = this;
-            this._initializeServices();
-            this._initializeUser();
         }
     },
 
@@ -35,35 +61,10 @@ exports.Main = Component.specialize(/** @lends Main# */ {
         }
     },
 
-    isReady: {
-        value: false
-    },
-
-    // Holds the Authenticate object after a succesfull authrorization
-    isAuthenticated: {
-        value: false
-    },
-
-    user: {
-        value: undefined
-    },
-
-    _authorizationManager: {
-         get: function () {
-             return DataService.authorizationManager;
-         }
-     },
-
-    isAuthenticationLoading: {
-        value: null
-    },
-
-    authorizationManagerWillInstantiateAuthorizationPanelForService: {
-        value: function(authorizationManager, authorizationPanel, authorizationService) {
-
-            this.authorizationPanel = new authorizationPanel();
-            this.isAuthenticationLoading = true;
-            return this.authorizationPanel;
+    enterDocument: {
+        value: function () {
+            this._initializeServices();
+            this._initializeUser();
         }
     },
 

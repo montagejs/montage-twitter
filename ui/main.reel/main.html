@@ -5,6 +5,37 @@
     <title>Main</title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="serialization" href="main.mjson">
+    <script type="text/montage-serialization">
+        {
+            "owner": {
+                "values": {
+                    "element": {"#": "main"},
+                    "auth": {"@": "auth"},
+                    "isConnected": false
+                }
+            },
+            "substitution": {
+                "prototype": "montage/ui/substitution.reel",
+                "values": {
+                    "element": {"#": "substitution"},
+                    "shouldLoadComponentTree": true,
+                    "switchValue": {"<-": "@owner.isAuthenticated ? 'content' : 'login'"}
+                }
+            },
+            "auth": {
+                "prototype": "montage/ui/slot.reel",
+                "values": {
+                    "element": {"#": "auth"},
+                    "content": {"<-": "@owner.authorizationPanel"}
+                }
+            },
+            "tweets": {
+                "prototype": "../../ui/tweets.reel",
+                "values": {
+                    "element": {"#": "tweets"}
+                }
+            }
+        }
     </script>
 </head>
 <body>

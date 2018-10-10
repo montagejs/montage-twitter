@@ -17,8 +17,22 @@ function getHashParam(url, name) {
  * @extends AuthorizationPanel
  */
 exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
+
+    isLoading: {
+        value: false
+    },
+
+    isAuthenticated: {
+        value: false
+    },
+
+    lastError: {
+        value: null
+    },
+
     constructor: {
         value: function OauthAuthorizationPanel() {
+            console.log('TwitterAuthorizationPanel');
             this.super();
         }
     },
@@ -26,16 +40,18 @@ exports.TwitterAuthorizationPanel = AuthorizationPanel.specialize({
     enterDocument: {
         value: function () {
             var self = this;
+            self.isLoading = true;
             self._getCredentials().then(function (credentials) {
                  return self.service.authorize(credentials);
             }).then(function (authorization) {
-                self.authorizationManagerPanel.approveAuthorization(authorization, self);
+                return self.authorizationManagerPanel.approveAuthorization(authorization, self);
+            }).catch(function (err) {
+                self.lastError = err;
+                console.error(err);
+            }).finally(function () {
+                self.isLoading = false;
             });
         }
-    },
-
-    isAuthenticated: {
-        value: false
     },
 
     _pollForCredentials: {

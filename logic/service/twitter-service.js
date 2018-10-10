@@ -3,7 +3,7 @@ var HttpService = require("montage/data/service/http-service").HttpService,
     Tweet = require('logic/model/tweet').Tweet;
 
 var Connection = require("logic/service/twitter-service-connection.json");
-    // Replace the above with the following to load mock data
+// Replace the above with the following to load mock data
 // var  Connection = require("logic/service/twitter-service-connection.mock.json");
 
 /**
